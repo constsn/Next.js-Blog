@@ -5,12 +5,12 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-
-import { getPost } from '@/lib/post';
-import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
+import { getPost } from '@/lib/post';
+import { getMarkdownTextServer } from '@/lib/markdown';
+import Image from 'next/image';
 
 type Params = {
   params: Promise<{ id: number }>;
@@ -19,11 +19,8 @@ type Params = {
 const PostPage = async ({ params }: Params) => {
   const { id } = await params;
   const postId = Number(id);
-
   const post = await getPost(postId);
-
   if (!post) return notFound();
-
   console.log(post);
 
   return (
@@ -47,7 +44,11 @@ const PostPage = async ({ params }: Params) => {
             <CardTitle className="text-3xl mb-6">{post.title}</CardTitle>
           </CardHeader>
           <CardContent>
-            <p>{post.content}</p>
+            <div
+              id="preview"
+              className="markdown-body prose max-w-none w-full p-4"
+              dangerouslySetInnerHTML={getMarkdownTextServer(post.content)}
+            />
           </CardContent>
         </div>
       </Card>

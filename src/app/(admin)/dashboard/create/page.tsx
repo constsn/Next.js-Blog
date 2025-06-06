@@ -43,7 +43,7 @@ const PostCreatePage = () => {
           name="content"
           value={content}
           onChange={e => setContent(e.target.value)}
-          className="w-full p-4 font-semibold text-sm text-gray-900 placeholder-gray-500 border border-gray-200 rounded-md overflow-hidden"
+          className="w-full p-4 font-semibold text-sm text-gray-900 placeholder-gray-500 border border-gray-200 rounded-md h-50 overflow-y-auto"
           placeholder="マークダウン形式で記事を書いてください"
           style={{ minHeight: '650px' }}
         />
