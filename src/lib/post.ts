@@ -1,3 +1,6 @@
+'use server';
+
+import { revalidatePath } from 'next/cache';
 import { prisma } from './prisma';
 
 export const getPublishedPosts = async () => {
@@ -27,9 +30,21 @@ export const getPost = async (postId: number) => {
   });
 };
 
+export const handleDeletePost = async (id: number) => {
+  try {
+    await prisma.post.delete({
+      where: {
+        id,
+      },
+    });
+    revalidatePath('/dashboard');
+  } catch (err) {
+    console.error('記事の削除に失敗しました', err);
+  }
+};
+
 export const searchPosts = async (search: string) => {
   const searchWords = search.trim().toLowerCase().split(/\s+/).filter(Boolean);
-
   console.log(searchWords, 'サーチワード配列');
 
   return await prisma.post.findMany({
