@@ -4,19 +4,14 @@ import {
   CardDescription,
   CardTitle,
 } from '@/components/ui/card';
+import { Post } from '@/types/post';
 import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import Image from 'next/image';
 import Link from 'next/link';
 
 type PostProp = {
-  post: {
-    id: number;
-    title: string;
-    content: string;
-    coverImageUrl: string;
-    createdAt: Date;
-  };
+  post: Post;
 };
 
 const PostCard = ({ post }: PostProp) => {
@@ -36,7 +31,7 @@ const PostCard = ({ post }: PostProp) => {
 
         <CardHeader>
           <CardDescription>
-            {format(new Date(post.createdAt), 'yyyy年M月d日', { locale: ja })}
+            {format(new Date(post.updatedAt), 'yyyy年M月d日', { locale: ja })}
           </CardDescription>
           <CardTitle className="text-xl">{post.title}</CardTitle>
         </CardHeader>

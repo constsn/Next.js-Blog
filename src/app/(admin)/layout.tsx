@@ -1,4 +1,4 @@
-import AdminHeader from '@/components/AdminHeader';
+import AdminHeader from '@/components/admin/AdminHeader';
 
 const DashBoardLayout = ({ children }: { children: React.ReactNode }) => {
   return (

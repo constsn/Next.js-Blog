@@ -1,12 +1,20 @@
 import { prisma } from './prisma';
 
-export const getPosts = async () => {
+export const getPublishedPosts = async () => {
   return await prisma.post.findMany({
     where: {
       published: true,
     },
     orderBy: {
-      createdAt: 'desc',
+      updatedAt: 'desc',
+    },
+  });
+};
+
+export const getAllPosts = async () => {
+  return await prisma.post.findMany({
+    orderBy: {
+      updatedAt: 'desc',
     },
   });
 };
@@ -42,7 +50,7 @@ export const searchPosts = async (search: string) => {
       })),
     },
     orderBy: {
-      createdAt: 'desc',
+      updatedAt: 'desc',
     },
   });
 };
