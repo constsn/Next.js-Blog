@@ -1,36 +1,40 @@
 'use client';
 
-import PostStatusRadioGroup from '@/components/admin/PostStatusRadioGroup';
-import Markdown from '@/components/Markdown';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { createPost } from '@/lib/actions/createPost';
 import { useActionState, useState } from 'react';
+import { Input } from './ui/input';
+import { Label } from './ui/label';
+import { Button } from './ui/button';
+import Markdown from './Markdown';
+import PostStatusRadioGroup from './admin/PostStatusRadioGroup';
+import { editPost } from '@/lib/actions/editPost';
+import type { Post } from '@/types/post';
 
-const PostCreatePage = () => {
-  const [state, formAction] = useActionState(createPost, {
+type PostProps = {
+  post: Post;
+};
+
+const EditForm = ({ post }: PostProps) => {
+  const [state, formAction] = useActionState(editPost, {
     success: false,
     errors: {},
   });
-  const [published, setPublished] = useState(true);
-  const [content, setContent] = useState('');
+  const [published, setPublished] = useState(post.published);
+  const [content, setContent] = useState(post.content);
 
   return (
     <div className="mx-auto container">
-      <h1>新規記事作成</h1>
+      <h1>記事を編集</h1>
       <form action={formAction}>
         <Label>タイトル</Label>
         <Input
           type="text"
           id="title"
           name="title"
+          defaultValue={post.title}
           placeholder="タイトルを入力してください"
         />
         {state.errors.title && (
-          <p className="text-red-500 text-sm mt-1">
-            {state.errors.title.join('')}
-          </p>
+          <p className="text-red-500">{state.errors.title.join('')}</p>
         )}
         <Label>トップ画像</Label>
         <Input
@@ -40,15 +44,11 @@ const PostCreatePage = () => {
           accept="image/*"
         />
         {state.errors.coverImageUrl && (
-          <p className="text-red-500 text-sm mt-1">
-            {state.errors.coverImageUrl.join('')}
-          </p>
+          <p className="text-red-500">{state.errors.coverImageUrl.join('')}</p>
         )}
         <Label>本文</Label>
         {state.errors.content && (
-          <p className="text-red-500 text-sm mt-1">
-            {state.errors.content.join('')}
-          </p>
+          <p className="text-red-500">{state.errors.content.join('')}</p>
         )}
         <textarea
           id="content"
@@ -65,10 +65,16 @@ const PostCreatePage = () => {
           onPublished={setPublished}
         />
         <input type="hidden" name="published" value={published.toString()} />
-        <Button type="submit">投稿する</Button>
+        <input type="hidden" name="id" value={post.id} />
+        <input
+          type="hidden"
+          name="previousCoverImageUrl"
+          value={post.coverImageUrl}
+        />
+        <Button type="submit">更新する</Button>
       </form>
     </div>
   );
 };
 
-export default PostCreatePage;
+export default EditForm;

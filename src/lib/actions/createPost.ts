@@ -7,7 +7,11 @@ import { postShema } from '@/schemas/postSchema';
 
 type ActionState = {
   success: boolean;
-  errors: Record<string, string[]>;
+  errors: {
+    title?: string[];
+    content?: string[];
+    coverImageUrl?: string[];
+  };
 };
 
 export const createPost = async (

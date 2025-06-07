@@ -1,6 +1,6 @@
 import PostCard from '@/components/PostCard';
 import NotFound from './post/[id]/not-found';
-import { getPosts, searchPosts } from '@/lib/post';
+import { getPublishedPosts, searchPosts } from '@/lib/post';
 
 type SearchParams = {
   searchParams: Promise<{
@@ -12,7 +12,7 @@ const TopPostsPage = async ({ searchParams }: SearchParams) => {
   const params = await searchParams;
   const query = params.search || '';
 
-  const posts = query ? await searchPosts(query) : await getPosts();
+  const posts = query ? await searchPosts(query) : await getPublishedPosts();
 
   if (!posts) return <NotFound />;
 
