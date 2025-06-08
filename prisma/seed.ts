@@ -16,7 +16,7 @@ const main = async () => {
     'https://picsum.photos/id/1065/800/600',
   ];
 
-  const tags = ['React', '初心者', 'Typescript', 'Git', 'Prisma'];
+  const tags = ['React', '初心者', 'TypeScript', 'Git', 'Prisma'];
 
   for (const tagName of tags) {
     await prisma.tag.upsert({
@@ -48,8 +48,8 @@ const main = async () => {
       tags: {
         connectOrCreate: [
           {
-            where: { name: 'Typescript' },
-            create: { name: 'Typescript' },
+            where: { name: 'TypeScript' },
+            create: { name: 'TypeScript' },
           },
         ],
       },
