@@ -11,7 +11,13 @@ export const getPostsByTagName = async (tagName: string) => {
     where: {
       name: tagName,
     },
-    include: { posts: true },
+    include: {
+      posts: {
+        include: {
+          tags: true,
+        },
+      },
+    },
   });
 
   return tag?.posts ?? [];
