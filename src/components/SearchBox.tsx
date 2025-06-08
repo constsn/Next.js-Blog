@@ -18,7 +18,7 @@ const SearchBox = () => {
   };
 
   return (
-    <form onSubmit={hanldeSubmit}>
+    <form onSubmit={hanldeSubmit} className="flex items-center gap-2">
       <Input
         className="w-[300px] bg-white"
         id="search"

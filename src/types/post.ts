@@ -1,3 +1,8 @@
+type Tag = {
+  id: number;
+  name: string;
+};
+
 export type Post = {
   id: number;
   title: string;
@@ -6,4 +11,5 @@ export type Post = {
   coverImageUrl: string;
   createdAt: Date;
   updatedAt: Date;
+  tags: Tag[];
 };

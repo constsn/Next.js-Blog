@@ -8,6 +8,9 @@ export const getPublishedPosts = async () => {
     where: {
       published: true,
     },
+    include: {
+      tags: true,
+    },
     orderBy: {
       updatedAt: 'desc',
     },
@@ -63,6 +66,9 @@ export const searchPosts = async (search: string) => {
           },
         ],
       })),
+    },
+    include: {
+      tags: true,
     },
     orderBy: {
       updatedAt: 'desc',

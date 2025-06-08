@@ -1,0 +1,18 @@
+import { prisma } from './prisma';
+
+export const getAllTags = async () => {
+  return await prisma.tag.findMany({
+    orderBy: { name: 'asc' },
+  });
+};
+
+export const getPostsByTagName = async (tagName: string) => {
+  const tag = await prisma.tag.findUnique({
+    where: {
+      name: tagName,
+    },
+    include: { posts: true },
+  });
+
+  return tag?.posts ?? [];
+};
