@@ -23,7 +23,7 @@ const DashBoardPage = async () => {
   const posts = await getAllPosts();
 
   return (
-    <div className="mx-auto container">
+    <div className="mx-auto container mt-10">
       <Button onClick={handleLogout}>ログアウト</Button>
       <Button>
         <Link href="/dashboard/create">新規記事作成</Link>

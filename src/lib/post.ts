@@ -36,6 +36,14 @@ export const getPost = async (postId: number) => {
   });
 };
 
+export const getLatestPosts = async () => {
+  return await prisma.post.findMany({
+    where: { published: true },
+    take: 5,
+    orderBy: { updatedAt: 'desc' },
+  });
+};
+
 export const handleDeletePost = async (id: number) => {
   try {
     await prisma.post.delete({
