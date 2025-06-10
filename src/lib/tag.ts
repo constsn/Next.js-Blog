@@ -2,6 +2,9 @@ import { prisma } from './prisma';
 
 export const getAllTags = async () => {
   return await prisma.tag.findMany({
+    include: {
+      posts: true,
+    },
     orderBy: { name: 'asc' },
   });
 };

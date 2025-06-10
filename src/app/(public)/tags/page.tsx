@@ -4,6 +4,7 @@ import Link from 'next/link';
 
 const TagsPage = async () => {
   const tags = await getAllTags();
+  console.log(tags);
 
   return (
     <div className="mx-auto container px-4 py-6">
@@ -16,8 +17,11 @@ const TagsPage = async () => {
             className="rounded-xl shadow-sm hover:shadow-md transform transition-all hover:-translate-y-1 duration-300 ease-in-out"
           >
             <Card className="w-full pt-1">
-              <CardHeader>
+              <CardHeader className="flex justify-between">
                 <CardTitle className="text-xl">{tag.name}</CardTitle>
+                <p>
+                  <span>{tag.posts.length}</span>記事
+                </p>
               </CardHeader>
             </Card>
           </Link>

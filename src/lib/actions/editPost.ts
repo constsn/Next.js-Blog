@@ -24,6 +24,8 @@ export const editPost = async (
   const published = formData.get('published') === 'true';
   const coverImageInput = formData.get('coverImageUrl') as File;
   const previousCoverImageUrl = formData.get('previousCoverImageUrl') as string;
+  const tagString = formData.get('tags') as string;
+  const tags = tagString.split(',');
 
   const postShema = z.object({
     title: z.string().min(3, 'タイトルは3文字以上で入力してください'),
@@ -63,6 +65,13 @@ export const editPost = async (
       content,
       published,
       coverImageUrl,
+      tags: {
+        set: [],
+        connectOrCreate: tags.map(tag => ({
+          where: { name: tag },
+          create: { name: tag },
+        })),
+      },
     },
   });
 
