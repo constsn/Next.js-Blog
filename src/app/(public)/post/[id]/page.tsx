@@ -1,16 +1,9 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
 import { notFound } from 'next/navigation';
-import { format } from 'date-fns';
-import { ja } from 'date-fns/locale';
-import { getPost } from '@/lib/post';
-import { getMarkdownTextServer } from '@/lib/markdown';
-import Image from 'next/image';
+import { getLatestPosts, getPost } from '@/lib/post';
+import LatestPostList from '@/components/LatestPostList';
+import PostDetail from '@/components/PostDetail';
+import { getAllTags } from '@/lib/tag';
+import Link from 'next/link';
 
 type Params = {
   params: Promise<{ id: number }>;
@@ -21,37 +14,37 @@ const PostPage = async ({ params }: Params) => {
   const postId = Number(id);
   const post = await getPost(postId);
   if (!post) return notFound();
-  console.log(post);
+
+  const latestPosts = await getLatestPosts();
+
+  const tags = await getAllTags();
 
   return (
-    <div className="mx-auto container px-4 py-7">
-      <Card className=" mx-auto max-w-3xl rounded pt-0">
-        <div className="relative w-full h-80 lg:h-100">
-          <Image
-            src={post.coverImageUrl}
-            alt={post.title}
-            fill
-            priority
-            className="object-cover rounded-t"
-            sizes="100vw "
-          />
+    <div className="py-7 md:mx-auto md:container md:px-4 lg:px-40 ">
+      <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-6 md:gap-0">
+        <PostDetail post={post} />
+        <div className="flex flex-col gap-4">
+          <LatestPostList posts={latestPosts} />
+          <div className="border rounded p-4 shadow-md">
+            <h2 className="text-lg font-bold border-b pb-2 mb-2">タグ一覧</h2>
+            <div className="grid grid-cols-4 gap-4">
+              {tags.map(tag => (
+                <Link
+                  href={`/tags/${tag.name}`}
+                  key={tag.id}
+                  className="shadow-sm hover:shadow-md transform transition-all hover:bg-gray-50 hover:-translate-y-1 duration-300 ease-in-out"
+                >
+                  <div>
+                    <p>
+                      {tag.name} <span>{`(${tag.posts.length})`}</span>
+                    </p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
-        <div className="px-4">
-          <CardHeader>
-            <CardDescription>
-              {format(new Date(post.createdAt), 'yyyy年M月d日', { locale: ja })}
-            </CardDescription>
-            <CardTitle className="text-3xl mb-6">{post.title}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div
-              id="preview"
-              className="markdown-body prose max-w-none w-full p-4"
-              dangerouslySetInnerHTML={getMarkdownTextServer(post.content)}
-            />
-          </CardContent>
-        </div>
-      </Card>
+      </div>
     </div>
   );
 };
