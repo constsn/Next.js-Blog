@@ -1,6 +1,5 @@
 'use client';
 
-import type { Post } from '@/types/post';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,7 +22,15 @@ import Link from 'next/link';
 import { useTransition } from 'react';
 
 type PostProp = {
-  post: Post;
+  post: {
+    id: number;
+    title: string;
+    content: string;
+    published: boolean;
+    coverImageUrl: string;
+    createdAt: Date;
+    updatedAt: Date;
+  };
 };
 
 const DashboardActionMenu = ({ post }: PostProp) => {

@@ -42,4 +42,6 @@ next-env.d.ts
 
 prisma/dev.db*
 
+public/images/*
+
 /src/generated/prisma

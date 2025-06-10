@@ -22,6 +22,10 @@ export const createPost = async (
   const content = formData.get('content') as string;
   const published = formData.get('published') === 'true';
   const coverImageInput = formData.get('coverImageUrl');
+  const tagString = formData.get('tags') as string;
+  const tags = tagString.split(',');
+
+  console.log(tags);
 
   //✅ 明示的に instanceof File を満たしてるように型定義
   if (!coverImageInput || !(coverImageInput instanceof File))
@@ -56,6 +60,12 @@ export const createPost = async (
       content,
       coverImageUrl,
       published,
+      tags: {
+        connectOrCreate: tags.map(tag => ({
+          where: { name: tag },
+          create: { name: tag },
+        })),
+      },
     },
   });
 
