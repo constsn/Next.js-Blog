@@ -14,7 +14,7 @@ type PostsProp = {
 
 const LatestPostList = ({ posts }: PostsProp) => (
   <div className="border shadow-md rounded p-4">
-    <h2 className="text-lg font-bold border-b pb-2">最新記事</h2>
+    <h2 className="text-lg font-bold border-b mb-2 pb-2">最新記事</h2>
     {posts.map(post => (
       <LatestPostItem key={post.id} post={post} />
     ))}
