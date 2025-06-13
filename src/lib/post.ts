@@ -17,6 +17,38 @@ export const getPublishedPosts = async () => {
   });
 };
 
+export const getPreviousPost = async (updatedAt: Date) => {
+  const previousPost = await prisma.post.findFirst({
+    where: {
+      published: true,
+      updatedAt: {
+        lt: updatedAt,
+      },
+    },
+    orderBy: {
+      updatedAt: 'desc',
+    },
+  });
+
+  return previousPost?.id;
+};
+
+export const getNextPost = async (updatedAt: Date) => {
+  const nextPost = await prisma.post.findFirst({
+    where: {
+      published: true,
+      updatedAt: {
+        gt: updatedAt,
+      },
+    },
+    orderBy: {
+      updatedAt: 'asc',
+    },
+  });
+
+  return nextPost?.id;
+};
+
 export const getAllPosts = async () => {
   return await prisma.post.findMany({
     orderBy: {
