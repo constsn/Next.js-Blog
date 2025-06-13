@@ -35,10 +35,10 @@ const PostCard = ({ post }: PostProp) => {
           <CardTitle className="text-lg line-clamp-3">{post.title}</CardTitle>
         </CardHeader>
       </Link>
-      <div className="flex flex-wrap gap-1 px-6 mt-auto">
+      <div className="flex flex-wrap gap-2 px-6 mt-auto">
         {post.tags.map(tag => (
           <Link key={tag.id} href={`/tags/${tag.name}`}>
-            <span className="bg-black/70 text-white text-xs px-2 py-0.5 rounded-full">
+            <span className="text-xs px-2.5 py-0.5 font-medium text-white bg-gray-800 transition hover:bg-gray-700 hover:shadow-sm hover:scale-[1.03] rounded-full">
               {tag.name}
             </span>
           </Link>
