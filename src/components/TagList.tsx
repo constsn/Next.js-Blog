@@ -18,7 +18,7 @@ const TagList = ({ tags }: Prop) => (
         <Link
           href={`/tags/${tag.name}`}
           key={tag.id}
-          className="px-3 py-1 text-sm font-medium text-gray-700 bg-gray-100 rounded-full hover:text-white btc"
+          className="px-3 py-1 text-sm font-medium text-gray-700 bg-gray-100 rounded-full hover:text-white btn"
         >
           {tag.name}
         </Link>
