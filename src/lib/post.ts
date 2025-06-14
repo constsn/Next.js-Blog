@@ -57,14 +57,24 @@ export const getAllPosts = async () => {
   });
 };
 
-export const getPost = async (postId: number) => {
+export const getPublishedPost = async (postId: number) => {
   return await prisma.post.findUnique({
     where: {
       id: postId,
+      published: true,
     },
     include: {
       tags: true,
     },
+  });
+};
+
+export const getAnyPost = async (postId: number) => {
+  return await prisma.post.findUnique({
+    where: {
+      id: postId,
+    },
+    include: { tags: true },
   });
 };
 
