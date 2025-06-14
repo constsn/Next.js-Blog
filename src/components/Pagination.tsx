@@ -32,8 +32,8 @@ const Pagination = ({ query, currentPage, totalPages }: Props) => (
           key={i}
           href={
             query
-              ? `/page/${i + 1}/?search=${encodeURIComponent(query)}`
-              : `/page/${i + 1}`
+              ? `/pages/${i + 1}/?search=${encodeURIComponent(query)}`
+              : `/pages/${i + 1}`
           }
           className="px-3 py-1 border rounded"
         >
