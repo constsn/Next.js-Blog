@@ -5,7 +5,7 @@ import TagList from '@/components/TagList';
 import {
   getLatestPosts,
   getNextPost,
-  getPost,
+  getPublishedPost,
   getPreviousPost,
 } from '@/lib/post';
 import { getAllTags, getTagsByPostIdAndRelatedPosts } from '@/lib/tag';
@@ -19,7 +19,7 @@ type Params = {
 const PostPage = async ({ params }: Params) => {
   const { id } = await params;
   const postId = Number(id);
-  const post = await getPost(postId);
+  const post = await getPublishedPost(postId);
   if (!post) return notFound();
 
   const latestPosts = await getLatestPosts();
