@@ -1,5 +1,5 @@
 import EditForm from '@/components/EditForm';
-import { getPost } from '@/lib/post';
+import { getAnyPost } from '@/lib/post';
 import { notFound } from 'next/navigation';
 
 type Params = {
@@ -8,7 +8,7 @@ type Params = {
 
 const EditPage = async ({ params }: Params) => {
   const { id } = await params;
-  const post = await getPost(Number(id));
+  const post = await getAnyPost(Number(id));
   if (!post) return notFound();
   return <EditForm post={post} />;
 };
