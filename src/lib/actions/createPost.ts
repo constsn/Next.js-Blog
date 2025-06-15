@@ -5,7 +5,7 @@ import { saveImage } from '../image';
 import { prisma } from '../prisma';
 import { postShema } from '@/schemas/postSchema';
 
-type ActionState = {
+export type ActionState = {
   success: boolean;
   errors: {
     title?: string[];
