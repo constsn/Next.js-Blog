@@ -7,7 +7,9 @@ const AdminHeader = () => {
         <Link className="text-2xl font-semibold" href="/">
           shuto tech
         </Link>
-        <h1 className="text-2xl font-semibold">管理ページ</h1>
+        <Link href="/dashboard" className="text-2xl font-semibold">
+          管理ページ
+        </Link>
       </div>
     </header>
   );
