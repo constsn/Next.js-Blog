@@ -23,7 +23,6 @@ export const editPost = async (
   const content = formData.get('content') as string;
   const published = formData.get('published') === 'true';
   const coverImageInput = formData.get('coverImageUrl') as File;
-  const previousCoverImageUrl = formData.get('previousCoverImageUrl') as string;
   const tagString = formData.get('tags') as string;
   const tags = tagString.split(',');
 
@@ -44,10 +43,7 @@ export const editPost = async (
     };
   }
 
-  const coverImageUrl =
-    coverImageInput.size > 0
-      ? await saveImage(coverImageInput)
-      : previousCoverImageUrl;
+  const coverImageUrl = await saveImage(coverImageInput);
 
   if (!coverImageUrl && coverImageInput.size > 0)
     return {
