@@ -46,7 +46,7 @@ const EditForm = ({ post }: PostProps) => {
           <form action={formAction} className="flex flex-col gap-6">
             <PostTitleInput
               title={title}
-              defaultValue={title}
+              
               onChange={setTitle}
               state={state}
             />
