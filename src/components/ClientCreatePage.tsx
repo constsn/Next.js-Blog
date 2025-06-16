@@ -60,12 +60,7 @@ const ClientCreatePage = ({ popularTags }: Prop) => {
       <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr] gap-12">
         <div className="bg-white shadow-lg border border-gray-300 rounded p-8">
           <form action={formAction} className="flex flex-col gap-4">
-            <PostTitleInput
-              title={title}
-              onChange={setTitle}
-              state={state}
-              defaultValue=""
-            />
+            <PostTitleInput title={title} onChange={setTitle} state={state} />
             <CoverImageUpload state={state} onChange={handleImageChange} />
             <MarkdownEditor
               content={content}

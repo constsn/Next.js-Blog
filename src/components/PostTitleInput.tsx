@@ -4,17 +4,12 @@ import { Label } from './ui/label';
 
 type Props = {
   title: string;
-  defaultValue: string;
+
   onChange: (value: string) => void;
   state: ActionState;
 };
 
-const PostTitleInput = ({
-  title,
-  defaultValue = '',
-  onChange,
-  state,
-}: Props) => (
+const PostTitleInput = ({ title, onChange, state }: Props) => (
   <div>
     <Label htmlFor="title" className="font-medium text-gray-700 text-sm">
       タイトル
@@ -25,7 +20,6 @@ const PostTitleInput = ({
       id="title"
       name="title"
       value={title}
-      defaultValue={defaultValue}
       onChange={e => onChange(e.target.value)}
       placeholder="タイトルを入力してください"
     />

@@ -1,30 +1,27 @@
 import DashboardNav from '@/components/DashboardNav';
-import { FileText } from 'lucide-react';
+import DashboardPagination from '@/components/DashboardPagination';
+import DashboardPostTable from '@/components/DashboardPostTable';
 
-const DashBoardPage = () => {
+import { ADMIN_ITEMS_PER_PAGE } from '@/lib/constant';
+import { getAllPosts } from '@/lib/post';
+
+const Page = async () => {
+  const posts = await getAllPosts();
+  const paginatedPosts = posts.slice(0, ADMIN_ITEMS_PER_PAGE);
   return (
-    <DashboardNav isActive="dashboard" label="ダッシュボード">
-      <div className="px-24 mt-12">
-        <div className="grid grid-cols-3">
-          <div className="bg-white rounded-md border border-gray-200 p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">総記事数</p>
-                <p className="text-2xl font-bold text-gray-900 mt-1">23</p>
-              </div>
-              <FileText className="w-6 h-6" />
-            </div>
-          </div>
-        </div>
+    <DashboardNav isActive="post" label="記事管理">
+      <div className="px-12 mt-12">
+        <DashboardPostTable paginatedPosts={paginatedPosts} />
+        <DashboardPagination />
       </div>
     </DashboardNav>
   );
 };
 
-export default DashBoardPage;
+export default Page;
 
 {
-  /* <div className="flex h-screen bg-gray-50">
+  /*  <div className="flex h-screen bg-gray-50">
       <div className="w-64 bg-white ">
         <div className="p-6 border-b border-gray-200">
           <h1 className="text-xl font-bold text-gray-900">shuto tech</h1>
@@ -34,7 +31,7 @@ export default DashBoardPage;
           <div className="space-y-2">
             <Link
               href="/dashboard"
-              className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-left bg-blue-50 text-blue-700 border border-blue-200"
+              className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-left text-gray-700 hover:bg-gray-100"
             >
               <div className="flex items-center space-x-3">
                 <Home className="w-5 h-5" />
@@ -43,7 +40,7 @@ export default DashBoardPage;
             </Link>
             <Link
               href="/dashboard/post"
-              className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-left text-gray-700 hover:bg-gray-100"
+              className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-left bg-blue-50 text-blue-700 border border-blue-200"
             >
               <div className="flex items-center space-x-3">
                 <FileText className="w-5 h-5" />
@@ -57,9 +54,7 @@ export default DashBoardPage;
         <header className="bg-white shadow-sm border-b border-gray-200 px-12 py-4">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-lg font-semibold text-gray-900">
-                ダッシュボード
-              </h2>
+              <h2 className="text-lg font-semibold text-gray-900">記事管理</h2>
               <p className="text-sm text-gray-500 mt-1">
                 {new Date().toLocaleDateString('ja-JP', {
                   year: 'numeric',
@@ -78,6 +73,10 @@ export default DashBoardPage;
             </Link>
           </div>
         </header>
+        <div className="px-12 mt-12">
+          <DashboardPostTable paginatedPosts={paginatedPosts} />
+          <DashboardPagination />
+        </div>
       </div>
-    </div> */
+    </div>*/
 }
