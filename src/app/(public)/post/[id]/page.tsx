@@ -11,6 +11,7 @@ import {
 import { getAllTags, getTagsByPostIdAndRelatedPosts } from '@/lib/tag';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { auth } from '@/auth';
 
 type Params = {
   params: Promise<{ id: number }>;
@@ -25,6 +26,7 @@ const PostPage = async ({ params }: Params) => {
   const latestPosts = await getLatestPosts();
 
   const tags = await getAllTags();
+  const filteredTags = tags.filter(tag => tag.posts.length > 0);
 
   const tagsWithPosts = await getTagsByPostIdAndRelatedPosts(postId);
 
@@ -39,16 +41,16 @@ const PostPage = async ({ params }: Params) => {
     )
     .slice(0, 3);
 
-  console.log(relatedPosts);
-
   const previousPostId = await getPreviousPost(post.updatedAt);
   const nextPostId = await getNextPost(post.updatedAt);
+
+  const session = await auth();
 
   return (
     <div className="py-7 md:mx-auto md:container px-4 lg:px-40 ">
       <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-12">
         <div className="flex flex-col gap-12">
-          <PostDetail post={post} />
+          <PostDetail post={post} user={session?.user} />
           <div className="flex justify-between items-center mt-6 border-t pt-6 text-sm text-white">
             {previousPostId ? (
               <Link
@@ -84,7 +86,7 @@ const PostPage = async ({ params }: Params) => {
         </div>
         <div className="flex flex-col gap-12">
           <LatestPostList posts={latestPosts} />
-          <TagList tags={tags} />
+          <TagList tags={filteredTags} />
         </div>
       </div>
     </div>

@@ -24,6 +24,7 @@ const Page = async ({ params }: Params) => {
 
   const latestPosts = await getLatestPosts();
   const tags = await getAllTags();
+  const filteredTags = tags.filter(tag => tag.posts.length > 0);
 
   return (
     <div className="mx-auto container px-4 lg:px-40 py-6">
@@ -72,7 +73,7 @@ const Page = async ({ params }: Params) => {
         </div>
         <div className="flex flex-col gap-12">
           <LatestPostList posts={latestPosts} />
-          <TagList tags={tags} />
+          <TagList tags={filteredTags} />
         </div>
       </div>
     </div>
