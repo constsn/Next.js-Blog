@@ -56,7 +56,7 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
           return {
             id: '1',
             email: adminEmail,
-            name: 'Administrator',
+            name: 'shuto',
           };
         } else {
           console.log('パスワードが一致しません');

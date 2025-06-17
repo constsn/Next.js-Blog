@@ -13,3 +13,10 @@ export type Post = {
   updatedAt: Date;
   tags: Tag[];
 };
+
+export type Comment = {
+  id: number;
+  author: string;
+  content: string;
+  createdAt: Date;
+};

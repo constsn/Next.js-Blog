@@ -65,6 +65,7 @@ export const getPublishedPost = async (postId: number) => {
     },
     include: {
       tags: true,
+      comments: true,
     },
   });
 };
@@ -74,7 +75,7 @@ export const getAnyPost = async (postId: number) => {
     where: {
       id: postId,
     },
-    include: { tags: true },
+    include: { tags: true, comments: true },
   });
 };
 
