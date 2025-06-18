@@ -19,4 +19,6 @@ export type Comment = {
   author: string;
   content: string;
   createdAt: Date;
+  parentId?: number | null;
+  authorEmail?: string | null;
 };

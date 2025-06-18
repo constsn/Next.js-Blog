@@ -32,10 +32,14 @@ model Tag {
 }
 
 model Comment {
-  id             Int      @id @default(autoincrement())
+  id             Int       @id @default(autoincrement())
   postId         Int
-  post           Post     @relation(fields: [postId], references: [id])
+  post           Post      @relation(fields: [postId], references: [id])
   author         String
   content        String
   createdAt      DateTime  @default(now())
+  authorEmail    String?
+  parentId       Int?
+  parent         Comment?  @relation("CommentToParent", fields: [parentId], references: [id])
+  replies        Comment[] @relation("CommentToParent")
 }

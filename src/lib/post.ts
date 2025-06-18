@@ -65,7 +65,17 @@ export const getPublishedPost = async (postId: number) => {
     },
     include: {
       tags: true,
-      comments: true,
+      comments: {
+        orderBy: { createdAt: 'desc' },
+        select: {
+          id: true,
+          author: true,
+          content: true,
+          createdAt: true,
+          parentId: true,
+          authorEmail: true,
+        },
+      },
     },
   });
 };
