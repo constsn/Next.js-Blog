@@ -3,6 +3,7 @@
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
+import { auth } from '@/auth';
 
 export type State = {
   success: boolean;
@@ -19,6 +20,9 @@ export const createComment = async (
   const author = formData.get('author') as string;
   const content = formData.get('content') as string;
   const postId = formData.get('postId');
+  const parentId = formData.get('parentId');
+
+  const session = await auth();
 
   const commentSchema = z.object({
     author: z.string().min(1, '名前は必須です'),
@@ -34,13 +38,26 @@ export const createComment = async (
     return { success: false, errors: result.error.flatten().fieldErrors };
   }
 
-  await prisma.comment.create({
-    data: {
-      author,
-      content,
-      postId: Number(postId),
-    },
-  });
+  if (parentId) {
+    await prisma.comment.create({
+      data: {
+        author,
+        content,
+        postId: Number(postId),
+        parentId: Number(parentId),
+        authorEmail: session?.user?.email ?? 'anonymous@unknown.com',
+      },
+    });
+  } else {
+    await prisma.comment.create({
+      data: {
+        author,
+        content,
+        postId: Number(postId),
+        authorEmail: session?.user?.email ?? 'anonymous@unknown.com',
+      },
+    });
+  }
 
   revalidatePath(`/post/${postId}`);
 
