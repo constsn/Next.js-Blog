@@ -8,17 +8,18 @@ import {
   CardTitle,
 } from './ui/card';
 import Image from 'next/image';
-import { format, formatDistanceToNow } from 'date-fns';
+import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import { getMarkdownTextServer } from '@/lib/markdown';
 import type { Comment, Tag } from '@/types/post';
 import Link from 'next/link';
-import { MessageSquare, Tag as TagIcon, User } from 'lucide-react';
+import { MessageSquare, Tag as TagIcon } from 'lucide-react';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
-import { useActionState } from 'react';
+import { useActionState, useRef, useState } from 'react';
 import { createComment } from '@/lib/actions/createComment';
 import { Button } from './ui/button';
+import CommentThread from './CommentThread';
 
 type Prop = {
   post: {
@@ -45,7 +46,20 @@ const PostDetail = ({ post, user }: Prop) => {
     errors: {},
   });
 
-  console.log(user);
+  const [isSelected, setIsSelected] = useState<number | null>(null);
+  const [selectedComment, setSelectedComment] = useState<null | Comment[]>(
+    null
+  );
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleClick = (commentId: number) => {
+    inputRef.current?.focus();
+    setIsSelected(commentId);
+    setSelectedComment(
+      post.comments.filter(comment => comment.id === commentId)
+    );
+  };
 
   return (
     <Card className="w-full md:max-w-3xl rounded pt-0">
@@ -78,7 +92,6 @@ const PostDetail = ({ post, user }: Prop) => {
             <TagIcon size={24} />
             <h2 className="text-xl font-bold">タグ</h2>
           </div>
-
           <div className="flex flex-wrap gap-4 px-2 mt-8">
             {post.tags.map(tag => (
               <Link key={tag.id} href={`/tags/${tag.name}`}>
@@ -95,6 +108,18 @@ const PostDetail = ({ post, user }: Prop) => {
               {post.comments.length > 0 ? `(${post.comments.length})` : ''}
             </h2>
           </div>
+          {isSelected && selectedComment && (
+            <div className="flex justify-between mb-4 border-b pb-4">
+              <h2>{selectedComment[0].author} さんに返信する</h2>
+              <button
+                type="button"
+                className="cursor-pointer text-red-500"
+                onClick={() => setIsSelected(null)}
+              >
+                キャンセル
+              </button>
+            </div>
+          )}
           <div className="border border-gray-300 rounded-2xl py-6 px-12">
             <form action={formAction} className="flex flex-col gap-6">
               <div>
@@ -105,7 +130,8 @@ const PostDetail = ({ post, user }: Prop) => {
                   id="author"
                   name="author"
                   type="text"
-                  className="border-gray-300 mt-2"
+                  className="border-gray-300"
+                  ref={inputRef}
                 />
                 {state.errors.author && (
                   <p className="text-red-500 text-sm mt-1">
@@ -115,7 +141,7 @@ const PostDetail = ({ post, user }: Prop) => {
               </div>
               <div>
                 <Label htmlFor="content" className="text-lg">
-                  コメント
+                  {isSelected ? '返信内容' : 'コメント'}
                 </Label>
                 <textarea
                   id="content"
@@ -129,32 +155,28 @@ const PostDetail = ({ post, user }: Prop) => {
                   </p>
                 )}
               </div>
-              <Button type="submit">送信</Button>
+              <Button type="submit" className="hover:bg-gray-300">
+                {isSelected ? '返信する' : '送信'}{' '}
+              </Button>
               <input type="hidden" name="postId" value={post.id} />
+              {isSelected && (
+                <input type="hidden" name="parentId" value={isSelected} />
+              )}
             </form>
           </div>
           {post.comments.length > 0 && (
-            <div className="space-y-4 mt-16">
-              {post.comments.map(comment => (
-                <div
-                  key={comment.id}
-                  className="border rounded-lg p-4 bg-white"
-                >
-                  <div className="flex items-center gap-2 text-sm text-gray-700 mb-2">
-                    <User className="w-6 h-6 text-white bg-gray-500 rounded-full" />
-                    <span className="font-medium">{comment.author}</span>
-                    <span className="text-xs text-gray-400 ml-2">
-                      {formatDistanceToNow(new Date(comment.createdAt), {
-                        addSuffix: true,
-                        locale: ja,
-                      })}
-                    </span>
-                  </div>
-                  <p className="text-sm text-gray-800 mt-4">
-                    {comment.content}
-                  </p>
-                </div>
-              ))}
+            <div className="space-y-4 mt-12">
+              {post.comments
+                .filter(comment => comment.parentId === null)
+                .map(comment => (
+                  <CommentThread
+                    key={comment.id}
+                    comment={comment}
+                    allComments={post.comments}
+                    onReplyClick={handleClick}
+                    user={user}
+                  />
+                ))}
             </div>
           )}
         </CardContent>
@@ -164,3 +186,27 @@ const PostDetail = ({ post, user }: Prop) => {
 };
 
 export default PostDetail;
+
+{
+  /*<div
+                    key={comment.id}
+                    className="border rounded-lg p-4 bg-white"
+                  >
+                    <div className="flex items-center gap-2 text-sm text-gray-700 mb-2">
+                      <User className="w-6 h-6 text-white bg-gray-500 rounded-full" />
+                      <span className="font-medium">{comment.author}</span>
+                      <span className="text-xs text-gray-400 ml-2">
+                        {formatDistanceToNow(new Date(comment.createdAt), {
+                          addSuffix: true,
+                          locale: ja,
+                        })}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <p className="text-sm text-gray-800 mt-4">
+                        {comment.content}
+                      </p>
+                      <span onClick={() => handleClick(comment.id)}>返信</span>
+                    </div>
+                  </div> */
+}
