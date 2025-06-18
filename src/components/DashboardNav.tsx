@@ -1,5 +1,5 @@
 import { signOut } from '@/auth';
-import { FileText, Home, LogOut, Plus } from 'lucide-react';
+import { FileText, Home, LogOut, MessageSquare, Plus } from 'lucide-react';
 import Link from 'next/link';
 
 type Props = {
@@ -51,7 +51,19 @@ const DashboardNav = async ({ isActive, label, children }: Props) => {
                 <span className="font-medium">記事管理</span>
               </div>
             </Link>
-
+            <Link
+              href="/dashboard/comment"
+              className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-left ${
+                isActive === 'comment'
+                  ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                  : 'text-gray-700 hover:bg-gray-100'
+              } `}
+            >
+              <div className="flex items-center space-x-3">
+                <MessageSquare className="w-5 h-5" />
+                <span className="font-medium">コメント管理</span>
+              </div>
+            </Link>
             <button
               onClick={handleLogout}
               className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-left text-gray-700 hover:bg-gray-100"
