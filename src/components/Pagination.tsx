@@ -14,7 +14,7 @@ const Pagination = ({ query, currentPage, totalPages }: Props) => (
           <Link
             key={i}
             href={query ? `/?search=${encodeURIComponent(query)}` : '/'}
-            className="px-3 py-1 border rounded"
+            className="px-3 py-1 rounded pagination hover:border hover:text-white"
           >
             {i + 1}
           </Link>
@@ -23,7 +23,7 @@ const Pagination = ({ query, currentPage, totalPages }: Props) => (
       return i === currentPage - 1 ? (
         <span
           key={i}
-          className="px-3 py-1 border rounded font-bold bg-gray-200"
+          className="px-3 py-1 border text-white rounded font-bold bg-indigo-600"
         >
           {i + 1}
         </span>
@@ -35,7 +35,7 @@ const Pagination = ({ query, currentPage, totalPages }: Props) => (
               ? `/pages/${i + 1}/?search=${encodeURIComponent(query)}`
               : `/pages/${i + 1}`
           }
-          className="px-3 py-1 border rounded"
+          className="px-3 py-1 rounded pagination hover:border hover:text-white"
         >
           {i + 1}
         </Link>

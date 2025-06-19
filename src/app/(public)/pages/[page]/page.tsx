@@ -1,6 +1,7 @@
 import LatestPostList from '@/components/LatestPostList';
 import Pagination from '@/components/Pagination';
 import PostCard from '@/components/PostCard';
+import SearchBox from '@/components/SearchBox';
 import TagList from '@/components/TagList';
 import { POSTS_PER_PAGE } from '@/lib/constant';
 import { getLatestPosts, getPublishedPosts, searchPosts } from '@/lib/post';
@@ -29,13 +30,13 @@ const Page = async ({ params, searchParams }: Params) => {
   const filteredTags = tags.filter(tag => tag.posts.length > 0);
 
   return (
-    <div className="mx-auto container px-4 lg:px-40 py-6">
+    <div className="mx-auto container px-4 lg:px-40 mt-10 py-6">
       {query && posts.length > 0 && (
         <p className="text-gray-600 mb-4">
           「<span className="font-semibold">{query}</span>」の検索結果
         </p>
       )}
-      <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-12">
+      <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-14">
         <div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {paginatedPosts.map(post => (
@@ -49,6 +50,9 @@ const Page = async ({ params, searchParams }: Params) => {
           />
         </div>
         <div className="flex flex-col gap-12">
+          <div className="md:hidden">
+            <SearchBox />
+          </div>
           <LatestPostList posts={latestPosts} />
           <TagList tags={filteredTags} />
         </div>
