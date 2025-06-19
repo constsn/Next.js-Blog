@@ -1,5 +1,6 @@
 import LatestPostList from '@/components/LatestPostList';
 import PostCard from '@/components/PostCard';
+import SearchBox from '@/components/SearchBox';
 import TagList from '@/components/TagList';
 import { POSTS_PER_PAGE } from '@/lib/constant';
 import { getLatestPosts } from '@/lib/post';
@@ -27,7 +28,7 @@ const Page = async ({ params }: Params) => {
   const filteredTags = tags.filter(tag => tag.posts.length > 0);
 
   return (
-    <div className="mx-auto container px-4 lg:px-40 py-6">
+    <div className="mx-auto container px-4 lg:px-40 mt-10 py-6">
       <p className="text-xl mb-8 text-gray-800">
         <span>{tagName}</span>
         の記事一覧
@@ -46,7 +47,7 @@ const Page = async ({ params }: Params) => {
                   <Link
                     key={i}
                     href={`/tags/${id}`}
-                    className="px-3 py-1 border rounded"
+                    className="px-3 py-1 rounded pagination hover:border hover:text-white"
                   >
                     {i + 1}
                   </Link>
@@ -55,7 +56,7 @@ const Page = async ({ params }: Params) => {
               return i === currentPage - 1 ? (
                 <span
                   key={i}
-                  className="px-3 py-1 border rounded font-bold bg-gray-200"
+                  className="px-3 py-1 border text-white rounded font-bold bg-indigo-600"
                 >
                   {i + 1}
                 </span>
@@ -63,7 +64,7 @@ const Page = async ({ params }: Params) => {
                 <Link
                   key={i}
                   href={`/tags/${id}/${i + 1}`}
-                  className="px-3 py-1 border rounded"
+                  className="px-3 py-1 rounded pagination hover:border hover:text-white"
                 >
                   {i + 1}
                 </Link>
@@ -72,6 +73,10 @@ const Page = async ({ params }: Params) => {
           </div>
         </div>
         <div className="flex flex-col gap-12">
+          <div className="md:hidden">
+            <SearchBox />
+          </div>
+
           <LatestPostList posts={latestPosts} />
           <TagList tags={filteredTags} />
         </div>

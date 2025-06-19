@@ -17,7 +17,7 @@ const LatestPostItem = ({ post }: PostProp) => (
   <Link
     key={post.id}
     href={`/post/${post.id}`}
-    className="flex items-start gap-3 hover:bg-gray-50 trantion p-2"
+    className="flex items-start gap-3 hover:bg-gray-100 trantion p-2"
   >
     <div className="relative w-20 h-14">
       <Image

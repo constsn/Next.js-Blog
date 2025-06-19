@@ -7,6 +7,8 @@ import {
 import { Post } from '@/types/post';
 import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
+import { Tag } from 'lucide-react';
+
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -16,29 +18,32 @@ type PostProp = {
 
 const PostCard = ({ post }: PostProp) => {
   return (
-    <Card className="w-full rounded-sm pt-0 pb-2 gap-3 shadow-md hover:shadow-xl transform transition-all hover:-translate-y-1 duration-300 ease-in-out">
+    <Card className="w-full border-none shadow-2xl rounded-none pt-0 pb-2 gap-3 hover:shadow-xl transform transition-all hover:-translate-y-1 duration-300 ease-in-out">
       <Link href={`/post/${post.id}`} className="flex-glow">
-        <div className="relative w-full h-72 sm:h-50 mb-2 ">
+        <div className="relative w-full h-[200px] mb-2 ">
           <Image
             src={post.coverImageUrl}
             alt={post.title}
             fill
             priority
-            className="object-cover rounded-t-sm"
+            className="object-cover"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         </div>
         <CardHeader>
-          <CardDescription>
+          <CardDescription className="mt-2">
             {format(new Date(post.updatedAt), 'yyyy年M月d日', { locale: ja })}
           </CardDescription>
-          <CardTitle className="text-lg line-clamp-3">{post.title}</CardTitle>
+          <CardTitle className="text-lg line-clamp-3 mt-2">
+            {post.title}
+          </CardTitle>
         </CardHeader>
       </Link>
-      <div className="flex flex-wrap gap-2 px-6 mt-auto">
+      <div className="flex flex-wrap gap-2 items-center px-6 mt-auto mb-3.5">
+        <Tag size={14} className="mt-1 font-bold" />
         {post.tags.map(tag => (
           <Link key={tag.id} href={`/tags/${tag.name}`}>
-            <span className="text-xs px-2.5 py-0.5 font-medium text-white bg-gray-800 transition hover:bg-gray-300 hover:shadow-sm hover:scale-[1.03] rounded-full">
+            <span className="text-xs underline font-medium text-black bg-white transition tag hover:p-1 hover:rounded-full hover:scale-[1.03]">
               {tag.name}
             </span>
           </Link>

@@ -12,6 +12,7 @@ import { getAllTags, getTagsByPostIdAndRelatedPosts } from '@/lib/tag';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { auth } from '@/auth';
+import SearchBox from '@/components/SearchBox';
 
 type Params = {
   params: Promise<{ id: number }>;
@@ -47,11 +48,11 @@ const PostPage = async ({ params }: Params) => {
   const session = await auth();
 
   return (
-    <div className="py-7 md:mx-auto md:container px-4 lg:px-40 ">
+    <div className="py-7 md:mx-auto md:container lg:px-40 mt-10">
       <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-12">
         <div className="flex flex-col gap-12">
           <PostDetail post={post} user={session?.user} />
-          <div className="flex justify-between items-center mt-6 border-t pt-6 text-sm text-white">
+          <div className="flex justify-between items-center mt-6 px-2 border-t pt-6 text-sm text-white">
             {previousPostId ? (
               <Link
                 href={`/post/${previousPostId}`}
@@ -75,7 +76,7 @@ const PostPage = async ({ params }: Params) => {
             )}
           </div>
 
-          <div className="border rounded p-6 bg-white shadow-md">
+          <div className=" p-6">
             <h2 className="text-lg font-bold border-b pb-2 mb-6">関連記事</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {relatedPosts.map(post => (
@@ -85,6 +86,9 @@ const PostPage = async ({ params }: Params) => {
           </div>
         </div>
         <div className="flex flex-col gap-12">
+          <div className="md:hidden mx-4">
+            <SearchBox />
+          </div>
           <LatestPostList posts={latestPosts} />
           <TagList tags={filteredTags} />
         </div>
