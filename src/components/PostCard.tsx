@@ -19,7 +19,10 @@ type PostProp = {
 const PostCard = ({ post }: PostProp) => {
   return (
     <Card className="w-full border-none shadow-2xl rounded-none pt-0 pb-2 gap-3 hover:shadow-xl transform transition-all hover:-translate-y-1 duration-300 ease-in-out">
-      <Link href={`/post/${post.id}`} className="flex-glow">
+      <Link
+        href={`/post/${encodeURIComponent(post.slug)}`}
+        className="flex-glow"
+      >
         <div className="relative w-full h-[200px] mb-2 ">
           <Image
             src={post.coverImageUrl}

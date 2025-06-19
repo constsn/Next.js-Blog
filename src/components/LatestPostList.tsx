@@ -5,6 +5,7 @@ type PostsProp = {
     id: number;
     title: string;
     content: string;
+    slug: string;
     published: boolean;
     coverImageUrl: string;
     createdAt: Date;

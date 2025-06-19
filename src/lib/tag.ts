@@ -26,16 +26,16 @@ export const getPostsByTagName = async (tagName: string) => {
   return tag?.posts ?? [];
 };
 
-export const getTagsByPostIdAndRelatedPosts = async (postId: number) => {
+export const getTagsByPostIdAndRelatedPosts = async (slug: string) => {
   return await prisma.post.findUnique({
-    where: { id: postId },
+    where: { slug },
     include: {
       tags: {
         include: {
           posts: {
             where: {
-              id: {
-                not: postId,
+              slug: {
+                not: slug,
               },
             },
             include: {

@@ -9,6 +9,7 @@ type Prop = {
     id: number;
     title: string;
     content: string;
+    slug: string;
     published: boolean;
     coverImageUrl: string;
     createdAt: Date;
@@ -81,13 +82,15 @@ const DashboardPostTable = async ({ paginatedPosts }: Prop) => {
               <td className="px-6 py-4">
                 <div className="flex items-center gap-2">
                   <Link
-                    href={`/dashboard/post/${post.id}`}
+                    href={`/dashboard/post/${encodeURIComponent(post.slug)}`}
                     className="text-gray-400 hover:text-blue-600 transition-colors"
                   >
                     <Eye className="w-4 h-4" />
                   </Link>
                   <Link
-                    href={`/dashboard/post/${post.id}/edit`}
+                    href={`/dashboard/post/${encodeURIComponent(
+                      post.slug
+                    )}/edit`}
                     className="text-gray-400 hover:text-green-600 transition-colors"
                   >
                     <Edit3 className="w-4 h-4" />

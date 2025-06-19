@@ -17,6 +17,7 @@ model Post {
   id             Int       @id @default(autoincrement())
   title          String
   content        String
+  slug           String    @unique
   tags           Tag[]     @relation("PostTags")
   coverImageUrl  String
   published      Boolean   @default(true)

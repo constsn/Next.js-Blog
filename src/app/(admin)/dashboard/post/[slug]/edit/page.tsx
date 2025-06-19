@@ -3,12 +3,13 @@ import { getAnyPost } from '@/lib/post';
 import { notFound } from 'next/navigation';
 
 type Params = {
-  params: Promise<{ id: number }>;
+  params: Promise<{ slug: string }>;
 };
 
 const EditPage = async ({ params }: Params) => {
-  const { id } = await params;
-  const post = await getAnyPost(Number(id));
+  const { slug: encodeSlug } = await params;
+  const slug = decodeURIComponent(encodeSlug);
+  const post = await getAnyPost(slug);
   if (!post) return notFound();
   return <EditForm post={post} />;
 };
