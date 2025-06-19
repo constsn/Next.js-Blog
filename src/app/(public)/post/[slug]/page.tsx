@@ -15,13 +15,15 @@ import { auth } from '@/auth';
 import SearchBox from '@/components/SearchBox';
 
 type Params = {
-  params: Promise<{ id: number }>;
+  params: Promise<{ slug: string }>;
 };
 
 const PostPage = async ({ params }: Params) => {
-  const { id } = await params;
-  const postId = Number(id);
-  const post = await getPublishedPost(postId);
+  const { slug: encodeSlug } = await params;
+  const slug = decodeURIComponent(encodeSlug);
+
+  console.log(slug);
+  const post = await getPublishedPost(slug);
   if (!post) return notFound();
 
   const latestPosts = await getLatestPosts();
@@ -29,7 +31,7 @@ const PostPage = async ({ params }: Params) => {
   const tags = await getAllTags();
   const filteredTags = tags.filter(tag => tag.posts.length > 0);
 
-  const tagsWithPosts = await getTagsByPostIdAndRelatedPosts(postId);
+  const tagsWithPosts = await getTagsByPostIdAndRelatedPosts(slug);
 
   const relatedPosts = Array.from(
     new Map(
@@ -42,8 +44,8 @@ const PostPage = async ({ params }: Params) => {
     )
     .slice(0, 3);
 
-  const previousPostId = await getPreviousPost(post.updatedAt);
-  const nextPostId = await getNextPost(post.updatedAt);
+  const previousPostSlug = await getPreviousPost(post.updatedAt);
+  const nextPostSlug = await getNextPost(post.updatedAt);
 
   const session = await auth();
 
@@ -53,9 +55,9 @@ const PostPage = async ({ params }: Params) => {
         <div className="flex flex-col gap-12">
           <PostDetail post={post} user={session?.user} />
           <div className="flex justify-between items-center mt-6 px-2 border-t pt-6 text-sm text-white">
-            {previousPostId ? (
+            {previousPostSlug ? (
               <Link
-                href={`/post/${previousPostId}`}
+                href={`/post/${encodeURIComponent(previousPostSlug)}`}
                 className="px-4 py-2 border bg-gray-900 hover:bg-gray-300 rounded-md"
               >
                 ◀ 前の記事
@@ -64,9 +66,9 @@ const PostPage = async ({ params }: Params) => {
               <span />
             )}
 
-            {nextPostId ? (
+            {nextPostSlug ? (
               <Link
-                href={`/post/${nextPostId}`}
+                href={`/post/${encodeURIComponent(nextPostSlug)}`}
                 className="px-4 py-2 border bg-gray-900 hover:bg-gray-300 rounded-md"
               >
                 次の記事 ▶

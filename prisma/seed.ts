@@ -26,10 +26,20 @@ const main = async () => {
     });
   }
 
+  const generateSlug = (title: string) => {
+    return title
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/　/g, '-')
+      .replace(/[^\w\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF-]/g, '');
+  };
+
   await prisma.post.create({
     data: {
       title: 'テスト01',
       content: 'これは最初のブログ投稿です。',
+      slug: generateSlug('テスト01'),
       tags: {
         connectOrCreate: [
           { where: { name: 'React' }, create: { name: 'React' } },
@@ -45,6 +55,7 @@ const main = async () => {
     data: {
       title: 'テスト02',
       content: 'これは2番目のブログ投稿です。',
+      slug: generateSlug('テスト02'),
       tags: {
         connectOrCreate: [
           {
@@ -62,6 +73,7 @@ const main = async () => {
     data: {
       title: 'テスト03',
       content: 'これは3番目のブログ投稿です。',
+      slug: generateSlug('テスト03'),
       tags: {
         connectOrCreate: [
           { where: { name: 'Git' }, create: { name: 'Git' } },
@@ -77,6 +89,7 @@ const main = async () => {
     data: {
       title: 'テスト04',
       content: 'これは4番目のブログ投稿です。',
+      slug: generateSlug('テスト04'),
       tags: {
         connectOrCreate: [
           { where: { name: 'React' }, create: { name: 'React' } },
@@ -92,6 +105,7 @@ const main = async () => {
     data: {
       title: 'テスト05',
       content: 'これは5番目のブログ投稿です。',
+      slug: generateSlug('テスト05'),
       tags: {
         connectOrCreate: [
           { where: { name: 'TypeScript' }, create: { name: 'TypeScript' } },
@@ -106,6 +120,7 @@ const main = async () => {
     data: {
       title: 'テスト06',
       content: 'これは6番目のブログ投稿です。',
+      slug: generateSlug('テスト06'),
       tags: {
         connectOrCreate: [
           { where: { name: '初心者' }, create: { name: '初心者' } },
@@ -120,6 +135,7 @@ const main = async () => {
     data: {
       title: 'テスト07',
       content: 'これは7番目のブログ投稿です。',
+      slug: generateSlug('テスト07'),
       tags: {
         connectOrCreate: [
           { where: { name: 'Prisma' }, create: { name: 'Prisma' } },

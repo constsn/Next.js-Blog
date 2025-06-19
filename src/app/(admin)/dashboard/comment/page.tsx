@@ -108,7 +108,9 @@ const Page = async () => {
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
                         <Link
-                          href={`/dashboard/post/${comment.post.id}`}
+                          href={`/dashboard/post/${encodeURIComponent(
+                            comment.post.slug
+                          )}`}
                           className="text-gray-400 hover:text-blue-600 transition-colors"
                         >
                           <Eye className="w-4 h-4" />

@@ -1,5 +1,4 @@
 import PostCard from '@/components/PostCard';
-import NotFound from './post/[id]/not-found';
 import LatestPostList from '@/components/LatestPostList';
 import { getLatestPosts, getPublishedPosts, searchPosts } from '@/lib/post';
 import { getAllTags } from '@/lib/tag';
@@ -7,6 +6,7 @@ import { POSTS_PER_PAGE } from '@/lib/constant';
 import Link from 'next/link';
 import TagList from '@/components/TagList';
 import SearchBox from '@/components/SearchBox';
+import NotFound from './post/[slug]/not-found';
 
 type SearchParams = {
   searchParams: Promise<{

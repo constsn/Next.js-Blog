@@ -30,7 +30,7 @@ export const getPreviousPost = async (updatedAt: Date) => {
     },
   });
 
-  return previousPost?.id;
+  return previousPost?.slug;
 };
 
 export const getNextPost = async (updatedAt: Date) => {
@@ -46,7 +46,7 @@ export const getNextPost = async (updatedAt: Date) => {
     },
   });
 
-  return nextPost?.id;
+  return nextPost?.slug;
 };
 
 export const getAllPosts = async () => {
@@ -57,10 +57,10 @@ export const getAllPosts = async () => {
   });
 };
 
-export const getPublishedPost = async (postId: number) => {
+export const getPublishedPost = async (slug: string) => {
   return await prisma.post.findUnique({
     where: {
-      id: postId,
+      slug,
       published: true,
     },
     include: {
@@ -80,10 +80,10 @@ export const getPublishedPost = async (postId: number) => {
   });
 };
 
-export const getAnyPost = async (postId: number) => {
+export const getAnyPost = async (slug: string) => {
   return await prisma.post.findUnique({
     where: {
-      id: postId,
+      slug,
     },
     include: { tags: true, comments: true },
   });

@@ -6,6 +6,7 @@ type PostProp = {
     id: number;
     title: string;
     content: string;
+    slug: string;
     published: boolean;
     coverImageUrl: string;
     createdAt: Date;
@@ -16,7 +17,7 @@ type PostProp = {
 const LatestPostItem = ({ post }: PostProp) => (
   <Link
     key={post.id}
-    href={`/post/${post.id}`}
+    href={`/post/${encodeURIComponent(post.slug)}`}
     className="flex items-start gap-3 hover:bg-gray-100 trantion p-2"
   >
     <div className="relative w-20 h-14">

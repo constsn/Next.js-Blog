@@ -25,7 +25,14 @@ export const createPost = async (
   const tagString = formData.get('tags') as string;
   const tags = tagString.split(',');
 
-  console.log(tags);
+  const generateSlug = (title: string) => {
+    return title
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/　/g, '-')
+      .replace(/[^\w\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF-]/g, '');
+  };
 
   //✅ 明示的に instanceof File を満たしてるように型定義
   if (!coverImageInput || !(coverImageInput instanceof File))
@@ -54,12 +61,16 @@ export const createPost = async (
       errors: { coverImageUrl: ['画像の保存に失敗しました'] },
     };
 
+  const slug = generateSlug(title);
+
   await prisma.post.create({
     data: {
       title,
       content,
       coverImageUrl,
       published,
+      slug,
+
       tags: {
         connectOrCreate: tags.map(tag => ({
           where: { name: tag },
