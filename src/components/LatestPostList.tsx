@@ -1,3 +1,4 @@
+import { FileText } from 'lucide-react';
 import LatestPostItem from './LatestPostItem';
 
 type PostsProp = {
@@ -14,11 +15,17 @@ type PostsProp = {
 };
 
 const LatestPostList = ({ posts }: PostsProp) => (
-  <div className="shadow-xl p-4">
-    <h2 className="text-lg font-bold border-b mb-2 pb-2">最新記事</h2>
-    {posts.map(post => (
-      <LatestPostItem key={post.id} post={post} />
-    ))}
+  <div className="shadow-xl bg-white border p-8">
+    <div className="flex gap-2 items-center border-b text-gray-600 mb-4 pb-4">
+      <FileText />
+      <h2 className="text-lg">最新記事</h2>
+    </div>
+
+    <div className="flex flex-col gap-1.5">
+      {posts.map(post => (
+        <LatestPostItem key={post.id} post={post} />
+      ))}
+    </div>
   </div>
 );
 export default LatestPostList;

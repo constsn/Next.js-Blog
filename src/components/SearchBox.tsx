@@ -20,7 +20,7 @@ const SearchBox = () => {
   return (
     <form onSubmit={hanldeSubmit} className="flex items-center gap-2">
       <Input
-        className="flex-1 bg-white rounded-none"
+        className="flex-1 bg-white w-full rounded-none"
         id="search"
         type="text"
         value={input}

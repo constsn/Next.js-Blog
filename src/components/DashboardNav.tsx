@@ -18,10 +18,15 @@ const DashboardNav = async ({ isActive, label, children }: Props) => {
     <div className="flex h-screen bg-gray-50">
       <div className="w-64 bg-white ">
         <div className="p-6 border-b border-gray-200">
-          <Link href="/">
+          <Link href="/" className="hover:underline">
             <h1 className="text-xl font-bold text-gray-900">shuto tech</h1>
           </Link>
-          <p className="text-sm text-gray-500 mt-1">管理ダッシュボード</p>
+          <Link
+            href="/dashboard"
+            className="text-sm text-gray-500 mt-1 hover:underline"
+          >
+            管理ダッシュボード
+          </Link>
         </div>
         <nav className="p-4">
           <div className="space-y-2">
@@ -77,7 +82,7 @@ const DashboardNav = async ({ isActive, label, children }: Props) => {
         </nav>
       </div>
       <div className="flex flex-1 flex-col">
-        <header className="bg-white shadow-sm border-b border-gray-200 px-12 py-4">
+        <header className="bg-white shadow-sm border-b border-gray-200 px-30 py-4">
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-lg font-semibold text-gray-900">{label}</h2>

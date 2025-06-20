@@ -36,20 +36,20 @@ const HomePage = async ({ searchParams }: SearchParams) => {
   const filteredTags = tags.filter(tag => tag.posts.length > 0);
 
   return (
-    <div className="mx-auto container px-4 lg:px-40 py-6 mt-10">
+    <div className="mx-auto container px-4 lg:px-24 py-6 mt-10">
       {query && posts.length > 0 && (
         <p className="text-gray-600 mb-8 border-b pb-2">
           「<span className="font-semibold">{query}</span>」の検索結果
         </p>
       )}
-      <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-14">
+      <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-24">
         <div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-9">
             {paginatedPosts.map(post => (
               <PostCard key={post.id} post={post} />
             ))}
           </div>
-          <div className="flex justify-center gap-2 mt-8">
+          <div className="flex justify-center gap-2 mt-15">
             {Array.from({ length: totalPages }).map((_, i) => {
               return i === 0 ? (
                 <span

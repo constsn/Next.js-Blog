@@ -7,7 +7,7 @@ type Props = {
 };
 
 const Pagination = ({ query, currentPage, totalPages }: Props) => (
-  <div className="flex justify-center gap-2 mt-8">
+  <div className="flex justify-center gap-2 mt-15">
     {Array.from({ length: totalPages }).map((_, i) => {
       if (i === 0) {
         return (

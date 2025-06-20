@@ -10,7 +10,7 @@ const PublicHeader = () => {
 
   return (
     <header className="shadow-sm h-[80px]">
-      <div className="mx-auto container py-6 px-4 lg:px-40 flex items-center justify-between">
+      <div className="mx-auto container py-6 px-4 lg:px-24 flex items-center justify-between">
         <div className="flex flex-wrap items-center gap-6">
           <Link
             href="/"

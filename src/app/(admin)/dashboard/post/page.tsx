@@ -10,7 +10,7 @@ const Page = async () => {
   const paginatedPosts = posts.slice(0, ADMIN_ITEMS_PER_PAGE);
   return (
     <DashboardNav isActive="post" label="記事管理">
-      <div className="px-12 mt-12">
+      <div className="px-30 mt-12">
         <DashboardPostTable paginatedPosts={paginatedPosts} />
         <DashboardPagination />
       </div>
