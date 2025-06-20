@@ -34,8 +34,8 @@ const page = async ({ params }: Prop) => {
 
   return (
     <DashboardNav isActive="comment" label="コメント管理">
-      <div className="px-24 mt-12">
-        <div className="px-6 py-2 bg-white rounded shadow-sm border border-gray-200">
+      <div className="px-30 mt-12">
+        <div className="px-6 py-6 bg-white rounded shadow-sm border border-gray-200">
           <table className="w-full">
             <thead className="border-b border-gray-200">
               <tr>

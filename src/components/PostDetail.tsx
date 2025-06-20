@@ -62,7 +62,7 @@ const PostDetail = ({ post, user }: Prop) => {
   };
 
   return (
-    <Card className="w-full md:max-w-3xl shadow-none rounded-none border-none pt-0">
+    <Card className="w-full shadow-none rounded-none border-none pt-0">
       <div className="relative w-full h-80 lg:h-100">
         <Image
           src={post.coverImageUrl}
@@ -85,7 +85,7 @@ const PostDetail = ({ post, user }: Prop) => {
         <CardContent className="px-2 md:px-8">
           <div
             id="preview"
-            className="markdown-body prose max-w-none w-full py-4"
+            className="prose max-w-none w-full py-4"
             dangerouslySetInnerHTML={getMarkdownTextServer(post.content)}
           />
           <div className="flex items-center gap-2 border-b pb-0.5 mt-10">

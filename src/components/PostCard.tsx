@@ -1,14 +1,6 @@
-import {
-  Card,
-  CardHeader,
-  CardDescription,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import { Post } from '@/types/post';
-import { format } from 'date-fns';
-import { ja } from 'date-fns/locale';
 import { Tag } from 'lucide-react';
-
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -34,10 +26,7 @@ const PostCard = ({ post }: PostProp) => {
           />
         </div>
         <CardHeader>
-          <CardDescription className="mt-2">
-            {format(new Date(post.updatedAt), 'yyyy年M月d日', { locale: ja })}
-          </CardDescription>
-          <CardTitle className="text-lg line-clamp-3 mt-2">
+          <CardTitle className="text-xl line-clamp-3 mt-2">
             {post.title}
           </CardTitle>
         </CardHeader>

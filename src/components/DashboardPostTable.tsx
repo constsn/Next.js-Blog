@@ -33,7 +33,7 @@ const DashboardPostTable = async ({ paginatedPosts }: Prop) => {
   };
 
   return (
-    <div className="px-6 py-2 bg-white rounded shadow-sm border border-gray-200">
+    <div className="px-16 py-6 bg-white rounded shadow-sm border border-gray-200">
       <table className="w-full">
         <thead className="border-b border-gray-200">
           <tr>

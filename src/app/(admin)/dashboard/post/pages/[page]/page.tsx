@@ -21,7 +21,7 @@ const Page = async ({ params }: Prop) => {
 
   return (
     <DashboardNav isActive="post" label="記事管理">
-      <div className="px-12 mt-12">
+      <div className="px-30 mt-12">
         <DashboardPostTable paginatedPosts={paginatedPosts} />
         <div className="flex justify-center mt-8 gap-2">
           {Array.from({ length: totalPages }).map((_, i) => {

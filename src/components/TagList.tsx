@@ -1,3 +1,4 @@
+import { Tag } from 'lucide-react';
 import Link from 'next/link';
 
 type Prop = {
@@ -11,8 +12,12 @@ type Prop = {
 };
 
 const TagList = ({ tags }: Prop) => (
-  <div className="shadow-xl p-4">
-    <h2 className="text-lg font-bold border-b pb-2 mb-2">タグ一覧</h2>
+  <div className="shadow-xl bg-white border p-8">
+    <div className="flex items-center text-gray-600  gap-2 border-b pb-4 mb-4">
+      <Tag />
+      <h2 className="text-lg ">タグ一覧</h2>
+    </div>
+
     <div className="flex flex-wrap gap-2 mt-4">
       {tags.map(tag => (
         <Link

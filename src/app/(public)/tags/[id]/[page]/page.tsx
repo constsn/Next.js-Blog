@@ -28,19 +28,19 @@ const Page = async ({ params }: Params) => {
   const filteredTags = tags.filter(tag => tag.posts.length > 0);
 
   return (
-    <div className="mx-auto container px-4 lg:px-40 mt-10 py-6">
+    <div className="mx-auto container px-4 lg:px-24 mt-10 py-6">
       <p className="text-xl mb-8 text-gray-800">
         <span>{tagName}</span>
         の記事一覧
       </p>
-      <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-12">
+      <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-24">
         <div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-9">
             {paginatedPosts.map(post => (
               <PostCard key={post.id} post={post} />
             ))}
           </div>
-          <div className="flex justify-center gap-2 mt-8">
+          <div className="flex justify-center gap-2 mt-15">
             {Array.from({ length: totalPages }).map((_, i) => {
               if (i === 0) {
                 return (

@@ -13,16 +13,54 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { auth } from '@/auth';
 import SearchBox from '@/components/SearchBox';
+import { Metadata } from 'next';
+import ShareButtons from '@/components/ShareButtons';
 
 type Params = {
   params: Promise<{ slug: string }>;
 };
 
+const baseUrl = process.env.BASE_URL;
+
+export async function generateMetadata({ params }: Params): Promise<Metadata> {
+  const { slug: encodeSlug } = await params;
+  const slug = decodeURIComponent(encodeSlug);
+
+  const post = await getPublishedPost(slug);
+  if (!post) return notFound();
+
+  //const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
+
+  return {
+    title: post.title,
+    description: post.content.slice(0, 100),
+    openGraph: {
+      title: post.title,
+      description: post.content.slice(0, 100),
+      url: `${baseUrl}/post/${post.slug}`,
+      type: 'article',
+      images: [
+        {
+          url: `${baseUrl}${post.coverImageUrl}`,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.content.slice(0, 100),
+      images: [`${baseUrl}${post.coverImageUrl}`],
+    },
+  };
+}
+
 const PostPage = async ({ params }: Params) => {
   const { slug: encodeSlug } = await params;
   const slug = decodeURIComponent(encodeSlug);
 
-  console.log(slug);
   const post = await getPublishedPost(slug);
   if (!post) return notFound();
 
@@ -49,11 +87,16 @@ const PostPage = async ({ params }: Params) => {
 
   const session = await auth();
 
+  const currentUrl = `${baseUrl}/post/${post.slug}`;
+
   return (
-    <div className="py-7 md:mx-auto md:container lg:px-40 mt-10">
-      <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-12">
-        <div className="flex flex-col gap-12">
+    <div className="py-7 md:mx-auto md:container lg:px-24 mt-10">
+      <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-24">
+        <div className="flex flex-col gap-12 md:max-w-4xl">
           <PostDetail post={post} user={session?.user} />
+          <div className="mx-auto">
+            <ShareButtons title={post.title} url={currentUrl} />
+          </div>
           <div className="flex justify-between items-center mt-6 px-2 border-t pt-6 text-sm text-white">
             {previousPostSlug ? (
               <Link

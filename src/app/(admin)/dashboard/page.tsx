@@ -12,7 +12,7 @@ const DashBoardPage = async () => {
 
   return (
     <DashboardNav isActive="dashboard" label="ダッシュボード">
-      <div className="px-24 mt-12">
+      <div className="px-30 mt-12">
         <div className="grid grid-cols-3 gap-6">
           <div className="bg-white rounded-md border border-gray-200 p-6">
             <div className="flex items-center justify-between">

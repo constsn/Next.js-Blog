@@ -155,44 +155,15 @@ body {
   background-color: #9ba4b5;
 }
 
-.markdown-body {
-  font-size: 1rem;
-  font-weight: 400;
-}
-
-.markdown-body code::before,
-.markdown-body code::after {
-  content: none;
-}
-
-/* インラインコード */
-.markdown-body code {
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  padding: 2px 6px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 4px;
-  font-size: 0.9em;
-  font-family: 'SF Mono', Monaco, Consolas, monospace;
-}
-
-/* コードブロック */
-.markdown-body pre {
-  background: linear-gradient(145deg, #1a1d23 0%, #2d3748 100%);
-  color: #ffffff;
-  padding: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 6px;
+.prose pre {
   overflow-x: auto;
-  font-size: 0.9em;
-  line-height: 1.5;
 }
 
-.markdown-body pre code {
-  background: transparent;
-  color: inherit;
-  padding: 0;
-  border-radius: 0;
-  font-size: inherit;
-  font-weight: 400;
-  letter-spacing: 0.025em;
+.prose code {
+  background-color: transparent !important;
+}
+
+.prose code::before,
+.prose code::after {
+  content: none;
 }

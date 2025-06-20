@@ -30,15 +30,15 @@ const Page = async ({ params, searchParams }: Params) => {
   const filteredTags = tags.filter(tag => tag.posts.length > 0);
 
   return (
-    <div className="mx-auto container px-4 lg:px-40 mt-10 py-6">
+    <div className="mx-auto container px-4 lg:px-24 mt-10 py-6">
       {query && posts.length > 0 && (
         <p className="text-gray-600 mb-4">
           「<span className="font-semibold">{query}</span>」の検索結果
         </p>
       )}
-      <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-14">
+      <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-24">
         <div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-9">
             {paginatedPosts.map(post => (
               <PostCard key={post.id} post={post} />
             ))}
