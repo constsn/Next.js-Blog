@@ -1,6 +1,6 @@
-import DashboardNav from '@/components/DashboardNav';
-import DeleteCommentDialog from '@/components/DeleteCommentDialog';
-import { getComments } from '@/lib/comment';
+import DeleteCommentDialog from '@/components/admin/DeleteCommentDialog';
+import DashboardNav from '@/components/dashboard/DashboardNav';
+import { getComments } from '@/lib/db/comment';
 import { ADMIN_COMMENTS_PER_PAGE } from '@/lib/constant';
 import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';

@@ -1,11 +1,11 @@
-import { getComments } from '@/lib/comment';
-import DashboardNav from '@/components/DashboardNav';
+import { getComments } from '@/lib/db/comment';
 import { Clock, Eye, Globe, Lock } from 'lucide-react';
 import Link from 'next/link';
 import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
-import DeleteCommentDialog from '@/components/DeleteCommentDialog';
 import { ADMIN_COMMENTS_PER_PAGE } from '@/lib/constant';
+import DashboardNav from '@/components/dashboard/DashboardNav';
+import DeleteCommentDialog from '@/components/admin/DeleteCommentDialog';
 
 type Prop = {
   params: Promise<{ page: number }>;

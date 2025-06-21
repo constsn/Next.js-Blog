@@ -1,12 +1,13 @@
-import PostCard from '@/components/PostCard';
-import LatestPostList from '@/components/LatestPostList';
-import { getLatestPosts, getPublishedPosts, searchPosts } from '@/lib/post';
-import { getAllTags } from '@/lib/tag';
+import { getLatestPosts, getPublishedPosts, searchPosts } from '@/lib/db/post';
+import { getAllTags } from '@/lib/db/tag';
 import { POSTS_PER_PAGE } from '@/lib/constant';
 import Link from 'next/link';
-import TagList from '@/components/TagList';
-import SearchBox from '@/components/SearchBox';
+
 import NotFound from './post/[slug]/not-found';
+import SearchBox from '@/components/ui/SearchBox';
+import LatestPostList from '@/components/post/LatestPostList';
+import TagList from '@/components/tag/TagList';
+import PostCard from '@/components/post/PostCard';
 
 type SearchParams = {
   searchParams: Promise<{
@@ -74,7 +75,7 @@ const HomePage = async ({ searchParams }: SearchParams) => {
             })}
           </div>
         </div>
-        <div className="flex flex-col gap-12">
+        <div className="flex flex-col gap-16">
           <div className="md:hidden">
             <SearchBox />
           </div>

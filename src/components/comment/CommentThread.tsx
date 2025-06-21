@@ -7,21 +7,16 @@ type Props = {
   comment: Comment;
   allComments: Comment[];
   onReplyClick: (commentId: number) => void;
-  user?: {
-    id?: string;
-    name?: string | null;
-    email?: string | null;
-  };
 };
 
-const CommentThread = ({ comment, allComments, onReplyClick, user }: Props) => {
+const CommentThread = ({ comment, allComments, onReplyClick }: Props) => {
   const replies = allComments.filter(c => c.parentId === comment.id);
 
   const adminEmail = process.env.NEXT_PUBLIC_ADMIN_EMAIL;
   const isMyComment = adminEmail === comment.authorEmail;
 
   return (
-    <div className="ml-4 mt-4 border-l border-gray-200 pl-4">
+    <div className="ml-4 mt-10 border-l border-gray-200 pl-4">
       <div className="flex items-center gap-2 text-sm text-gray-700 mb-1">
         <User
           className={`w-8 h-8 text-white ${
@@ -57,7 +52,6 @@ const CommentThread = ({ comment, allComments, onReplyClick, user }: Props) => {
           comment={reply}
           allComments={allComments}
           onReplyClick={onReplyClick}
-          user={user}
         />
       ))}
     </div>

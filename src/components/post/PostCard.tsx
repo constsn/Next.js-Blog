@@ -26,7 +26,7 @@ const PostCard = ({ post }: PostProp) => {
           />
         </div>
         <CardHeader>
-          <CardTitle className="text-xl line-clamp-3 mt-2">
+          <CardTitle className="text-xl line-clamp-3 tracking-wider mt-6">
             {post.title}
           </CardTitle>
         </CardHeader>

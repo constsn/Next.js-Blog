@@ -29,7 +29,7 @@ const LatestPostItem = ({ post }: PostProp) => (
         className="object-cover"
       />
     </div>
-    <p className="text-md font-semibold leading-snug line-clamp-2">
+    <p className="text-md font-mono leading-snug tracking-wider line-clamp-2">
       {post.title}
     </p>
   </Link>

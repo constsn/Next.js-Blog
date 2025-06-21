@@ -1,5 +1,5 @@
 import { ActionState } from '@/lib/actions/createPost';
-import { Label } from './ui/label';
+import { Label } from '../ui/label';
 import TextareaAutosize from 'react-textarea-autosize';
 
 type Props = {

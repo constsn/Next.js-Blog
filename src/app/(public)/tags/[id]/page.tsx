@@ -1,10 +1,10 @@
-import LatestPostList from '@/components/LatestPostList';
-import PostCard from '@/components/PostCard';
-import SearchBox from '@/components/SearchBox';
-import TagList from '@/components/TagList';
+import LatestPostList from '@/components/post/LatestPostList';
+import PostCard from '@/components/post/PostCard';
+import TagList from '@/components/tag/TagList';
+import SearchBox from '@/components/ui/SearchBox';
 import { POSTS_PER_PAGE } from '@/lib/constant';
-import { getLatestPosts } from '@/lib/post';
-import { getAllTags, getPostsByTagName } from '@/lib/tag';
+import { getLatestPosts } from '@/lib/db/post';
+import { getAllTags, getPostsByTagName } from '@/lib/db/tag';
 import Link from 'next/link';
 
 type Params = {
@@ -58,7 +58,7 @@ const page = async ({ params }: Params) => {
             })}
           </div>
         </div>
-        <div className="flex flex-col gap-12">
+        <div className="flex flex-col gap-16">
           <div className="md:hidden">
             <SearchBox />
           </div>

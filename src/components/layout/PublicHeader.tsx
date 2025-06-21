@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import SearchBox from './SearchBox';
+import SearchBox from '../ui/SearchBox';
 import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
 

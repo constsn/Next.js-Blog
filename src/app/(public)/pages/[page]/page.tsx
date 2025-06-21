@@ -1,11 +1,11 @@
-import LatestPostList from '@/components/LatestPostList';
-import Pagination from '@/components/Pagination';
-import PostCard from '@/components/PostCard';
-import SearchBox from '@/components/SearchBox';
-import TagList from '@/components/TagList';
+import LatestPostList from '@/components/post/LatestPostList';
+import PostCard from '@/components/post/PostCard';
+import TagList from '@/components/tag/TagList';
+import Pagination from '@/components/ui/Pagination';
+import SearchBox from '@/components/ui/SearchBox';
 import { POSTS_PER_PAGE } from '@/lib/constant';
-import { getLatestPosts, getPublishedPosts, searchPosts } from '@/lib/post';
-import { getAllTags } from '@/lib/tag';
+import { getLatestPosts, getPublishedPosts, searchPosts } from '@/lib/db/post';
+import { getAllTags } from '@/lib/db/tag';
 
 type Params = {
   params: Promise<{ page: number }>;
@@ -49,7 +49,7 @@ const Page = async ({ params, searchParams }: Params) => {
             query={query}
           />
         </div>
-        <div className="flex flex-col gap-12">
+        <div className="flex flex-col gap-16">
           <div className="md:hidden">
             <SearchBox />
           </div>

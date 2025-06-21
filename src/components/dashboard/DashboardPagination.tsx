@@ -1,5 +1,5 @@
 import { ADMIN_ITEMS_PER_PAGE } from '@/lib/constant';
-import { getAllPosts } from '@/lib/post';
+import { getAllPosts } from '@/lib/db/post';
 import Link from 'next/link';
 
 const DashboardPagination = async () => {

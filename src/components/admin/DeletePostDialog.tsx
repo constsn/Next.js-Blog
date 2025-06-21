@@ -11,7 +11,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { handleDeletePost } from '@/lib/post';
+import { handleDeletePost } from '@/lib/db/post';
 import { Trash2 } from 'lucide-react';
 import { useTransition } from 'react';
 

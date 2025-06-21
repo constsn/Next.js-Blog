@@ -1,5 +1,5 @@
-import EditForm from '@/components/EditForm';
-import { getAnyPost } from '@/lib/post';
+import EditForm from '@/components/form/EditForm';
+import { getAnyPost } from '@/lib/db/post';
 import { notFound } from 'next/navigation';
 
 type Params = {

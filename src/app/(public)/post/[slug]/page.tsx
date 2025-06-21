@@ -1,20 +1,22 @@
-import LatestPostList from '@/components/LatestPostList';
-import PostDetail from '@/components/PostDetail';
-import PostCard from '@/components/PostCard';
-import TagList from '@/components/TagList';
+import PostDetail from '@/components/post/PostDetail';
+
 import {
   getLatestPosts,
   getNextPost,
   getPublishedPost,
   getPreviousPost,
-} from '@/lib/post';
-import { getAllTags, getTagsByPostIdAndRelatedPosts } from '@/lib/tag';
+} from '@/lib/db/post';
+import { getAllTags, getTagsByPostIdAndRelatedPosts } from '@/lib/db/tag';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { auth } from '@/auth';
-import SearchBox from '@/components/SearchBox';
+
 import { Metadata } from 'next';
-import ShareButtons from '@/components/ShareButtons';
+import ShareButtons from '@/components/ui/ShareButtons';
+import PostCard from '@/components/post/PostCard';
+import SearchBox from '@/components/ui/SearchBox';
+import LatestPostList from '@/components/post/LatestPostList';
+import TagList from '@/components/tag/TagList';
+import { FileText } from 'lucide-react';
 
 type Params = {
   params: Promise<{ slug: string }>;
@@ -28,8 +30,6 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 
   const post = await getPublishedPost(slug);
   if (!post) return notFound();
-
-  //const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
 
   return {
     title: post.title,
@@ -85,19 +85,17 @@ const PostPage = async ({ params }: Params) => {
   const previousPostSlug = await getPreviousPost(post.updatedAt);
   const nextPostSlug = await getNextPost(post.updatedAt);
 
-  const session = await auth();
-
   const currentUrl = `${baseUrl}/post/${post.slug}`;
 
   return (
     <div className="py-7 md:mx-auto md:container lg:px-24 mt-10">
       <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-24">
         <div className="flex flex-col gap-12 md:max-w-4xl">
-          <PostDetail post={post} user={session?.user} />
+          <PostDetail post={post} />
           <div className="mx-auto">
             <ShareButtons title={post.title} url={currentUrl} />
           </div>
-          <div className="flex justify-between items-center mt-6 px-2 border-t pt-6 text-sm text-white">
+          <div className="flex justify-between items-center mt-6 px-6 md:px-14 pt-6 text-sm text-white">
             {previousPostSlug ? (
               <Link
                 href={`/post/${encodeURIComponent(previousPostSlug)}`}
@@ -120,17 +118,19 @@ const PostPage = async ({ params }: Params) => {
               <span />
             )}
           </div>
-
-          <div className=" p-6">
-            <h2 className="text-lg font-bold border-b pb-2 mb-6">関連記事</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="p-6">
+            <div className="mb-10 md:px-6 gap-3 flex items-center tracking-wider">
+              <FileText />
+              <h2 className="text-lg">関連記事</h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 md:px-6 gap-9">
               {relatedPosts.map(post => (
                 <PostCard key={post.id} post={post} />
               ))}
             </div>
           </div>
         </div>
-        <div className="flex flex-col gap-12">
+        <div className="flex flex-col gap-16">
           <div className="md:hidden mx-4">
             <SearchBox />
           </div>

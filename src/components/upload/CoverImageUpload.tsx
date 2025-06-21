@@ -1,6 +1,6 @@
 import { ActionState } from '@/lib/actions/createPost';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
+import { Label } from '../ui/label';
+import { Input } from '../ui/input';
 
 type Props = {
   state: ActionState;

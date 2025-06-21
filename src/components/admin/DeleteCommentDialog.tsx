@@ -11,9 +11,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from './ui/alert-dialog';
+} from '../ui/alert-dialog';
 import { useTransition } from 'react';
-import { deleteComment } from '@/lib/comment';
+import { deleteComment } from '@/lib/db/comment';
 
 const DeleteCommentDialog = ({ commentId }: { commentId: number }) => {
   const [isPending, startTransition] = useTransition();
