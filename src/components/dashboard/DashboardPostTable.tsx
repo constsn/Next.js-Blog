@@ -2,7 +2,7 @@ import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import { Clock, Edit3, Eye, Globe, Lock } from 'lucide-react';
 import Link from 'next/link';
-import DeletePostDialog from './admin/DeletePostDialog';
+import DeletePostDialog from '../admin/DeletePostDialog';
 
 type Prop = {
   paginatedPosts: {

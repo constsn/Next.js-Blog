@@ -1,9 +1,9 @@
 'use server';
 
-import { saveImage } from '../image';
-import { prisma } from '../prisma';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
+import { prisma } from '../db/prisma';
+import { saveImage } from '../storage/image';
 
 type ActionState = {
   success: boolean;

@@ -30,7 +30,9 @@ model Tag {
   id             Int       @id @default(autoincrement())
   name           String    @unique
   posts          Post[]    @relation("PostTags")
-}
+}           
+
+
 
 model Comment {
   id             Int       @id @default(autoincrement())

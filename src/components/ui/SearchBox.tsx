@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Input } from './ui/input';
+import { Input } from './input';
 import { Search } from 'lucide-react';
 
 const SearchBox = () => {

@@ -20,7 +20,7 @@ const main = async () => {
 
   for (const tagName of tags) {
     await prisma.tag.upsert({
-      where: { name: tagName }, // 重複確認
+      where: { name: tagName },
       update: {},
       create: { name: tagName },
     });

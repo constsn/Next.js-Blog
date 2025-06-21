@@ -1,5 +1,5 @@
-import PostDetail from '@/components/PostDetail';
-import { getAnyPost } from '@/lib/post';
+import PostDetail from '@/components/post/PostDetail';
+import { getAnyPost } from '@/lib/db/post';
 import { notFound } from 'next/navigation';
 
 type Prop = {

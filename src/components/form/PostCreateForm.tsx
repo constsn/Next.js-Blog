@@ -1,15 +1,15 @@
 'use client';
 
 import PostStatusRadioGroup from '@/components/admin/PostStatusRadioGroup';
-import CoverImageUpload from '@/components/CoverImageUpload';
-import MarkdownEditor from '@/components/MarkdownEditor';
-import PostPreview from '@/components/PostPreview';
-import PostTitleInput from '@/components/PostTitleInput';
-import TagInput from '@/components/TagInput';
+import PostTitleInput from '@/components/post/PostTitleInput';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { createPost } from '@/lib/actions/createPost';
 import { useActionState, useCallback, useState } from 'react';
+import PostPreview from '../post/PostPreview';
+import TagInput from '../tag/TagInput';
+import CoverImageUpload from '../upload/CoverImageUpload';
+import MarkdownEditor from '../post/MarkdownEditor';
 
 type Prop = {
   popularTags: {
@@ -21,7 +21,7 @@ type Prop = {
   }[];
 };
 
-const ClientCreatePage = ({ popularTags }: Prop) => {
+const PostCreateForm = ({ popularTags }: Prop) => {
   const [state, formAction] = useActionState(createPost, {
     success: false,
     errors: {},
@@ -120,4 +120,4 @@ const ClientCreatePage = ({ popularTags }: Prop) => {
   );
 };
 
-export default ClientCreatePage;
+export default PostCreateForm;

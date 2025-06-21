@@ -1,5 +1,5 @@
-import ClientCreatePage from '@/components/ClientCreatePage';
-import { getAllTags } from '@/lib/tag';
+import PostCreateForm from '@/components/form/PostCreateForm';
+import { getAllTags } from '@/lib/db/tag';
 
 const Page = async () => {
   const alltags = await getAllTags();
@@ -10,7 +10,7 @@ const Page = async () => {
     .sort((a, b) => b.posts.length - a.posts.length)
     .slice(0, 5);
 
-  return <ClientCreatePage popularTags={popularTags} />;
+  return <PostCreateForm popularTags={popularTags} />;
 };
 
 export default Page;

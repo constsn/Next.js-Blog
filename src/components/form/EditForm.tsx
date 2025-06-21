@@ -2,14 +2,14 @@
 
 import type { Post } from '@/types/post';
 import { useActionState, useCallback, useState } from 'react';
-import { Button } from './ui/button';
-import PostStatusRadioGroup from './admin/PostStatusRadioGroup';
+import { Button } from '../ui/button';
+import PostStatusRadioGroup from '../admin/PostStatusRadioGroup';
 import { editPost } from '@/lib/actions/editPost';
-import PostTitleInput from './PostTitleInput';
-import CoverImageUpload from './CoverImageUpload';
-import TagInput from './TagInput';
-import MarkdownEditor from './MarkdownEditor';
-import PostPreview from './PostPreview';
+import PostTitleInput from '../post/PostTitleInput';
+import PostPreview from '../post/PostPreview';
+import TagInput from '../tag/TagInput';
+import MarkdownEditor from '../post/MarkdownEditor';
+import CoverImageUpload from '../upload/CoverImageUpload';
 
 type PostProps = {
   post: Post;
@@ -44,12 +44,7 @@ const EditForm = ({ post }: PostProps) => {
       <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr] gap-12 items-start">
         <div className="bg-white shadow-lg  border border-gray-300 rounded p-8">
           <form action={formAction} className="flex flex-col gap-6">
-            <PostTitleInput
-              title={title}
-              
-              onChange={setTitle}
-              state={state}
-            />
+            <PostTitleInput title={title} onChange={setTitle} state={state} />
             <CoverImageUpload state={state} onChange={handleImageChange} />
             <MarkdownEditor
               content={content}

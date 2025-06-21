@@ -1,6 +1,6 @@
 import { Plus, X } from 'lucide-react';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
+import { Input } from '../ui/input';
+import { Label } from '../ui/label';
 
 type Props = {
   inputTag: string;

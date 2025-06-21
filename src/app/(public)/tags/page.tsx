@@ -1,7 +1,7 @@
-import LatestPostList from '@/components/LatestPostList';
-import SearchBox from '@/components/SearchBox';
-import { getLatestPosts } from '@/lib/post';
-import { getAllTags } from '@/lib/tag';
+import LatestPostList from '@/components/post/LatestPostList';
+import SearchBox from '@/components/ui/SearchBox';
+import { getLatestPosts } from '@/lib/db/post';
+import { getAllTags } from '@/lib/db/tag';
 import { Tag } from 'lucide-react';
 import Link from 'next/link';
 
@@ -35,7 +35,7 @@ const TagsPage = async () => {
             ))}
           </div>
         </div>
-        <div className="flex flex-col gap-12">
+        <div className="flex flex-col gap-16">
           <div className="md:hidden">
             <SearchBox />
           </div>

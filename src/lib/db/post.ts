@@ -112,7 +112,6 @@ export const handleDeletePost = async (id: number) => {
 
 export const searchPosts = async (search: string) => {
   const searchWords = search.trim().toLowerCase().split(/\s+/).filter(Boolean);
-  console.log(searchWords, 'サーチワード配列');
 
   return await prisma.post.findMany({
     where: {

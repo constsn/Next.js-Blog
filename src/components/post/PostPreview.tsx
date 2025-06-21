@@ -1,6 +1,6 @@
 import Image from 'next/image';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { getMarkdownTextServer } from '@/lib/markdown';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { getMarkdownTextServer } from '@/lib/markdown/markdown';
 
 type Props = {
   imageUrl: string | null;
