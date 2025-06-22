@@ -1,5 +1,7 @@
 'use server';
 
+export const runtime = 'nodejs';
+
 import { redirect } from 'next/navigation';
 import { postShema } from '@/schemas/postSchema';
 import { saveImage } from '../storage/image';
