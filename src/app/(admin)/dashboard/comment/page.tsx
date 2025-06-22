@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import DeleteCommentDialog from '@/components/admin/DeleteCommentDialog';
 import DashboardNav from '@/components/dashboard/DashboardNav';
 import { getComments } from '@/lib/db/comment';
