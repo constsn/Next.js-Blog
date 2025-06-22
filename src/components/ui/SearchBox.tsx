@@ -12,9 +12,8 @@ const SearchBox = () => {
   const hanldeSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim()) return;
-
     setInput('');
-    router.push(`/?search=${encodeURIComponent(input)}`);
+    router.push(`/search?q=${encodeURIComponent(input)}`);
   };
 
   return (

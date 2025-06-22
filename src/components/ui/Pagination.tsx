@@ -1,19 +1,18 @@
 import Link from 'next/link';
 
 type Props = {
-  query: string;
   currentPage: number;
   totalPages: number;
 };
 
-const Pagination = ({ query, currentPage, totalPages }: Props) => (
+const Pagination = ({ currentPage, totalPages }: Props) => (
   <div className="flex justify-center gap-2 mt-15">
     {Array.from({ length: totalPages }).map((_, i) => {
       if (i === 0) {
         return (
           <Link
             key={i}
-            href={query ? `/?search=${encodeURIComponent(query)}` : '/'}
+            href="/"
             className="px-3 py-1 rounded pagination hover:border hover:text-white"
           >
             {i + 1}
@@ -30,11 +29,7 @@ const Pagination = ({ query, currentPage, totalPages }: Props) => (
       ) : (
         <Link
           key={i}
-          href={
-            query
-              ? `/pages/${i + 1}/?search=${encodeURIComponent(query)}`
-              : `/pages/${i + 1}`
-          }
+          href={`/pages/${i + 1}`}
           className="px-3 py-1 rounded pagination hover:border hover:text-white"
         >
           {i + 1}

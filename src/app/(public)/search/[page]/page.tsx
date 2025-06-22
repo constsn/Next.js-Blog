@@ -1,21 +1,28 @@
-import { getLatestPosts, getPublishedPosts } from '@/lib/db/post';
-import { getAllTags } from '@/lib/db/tag';
-import { POSTS_PER_PAGE } from '@/lib/constant';
-import Link from 'next/link';
-import NotFound from './post/[slug]/not-found';
-import SearchBox from '@/components/ui/SearchBox';
 import LatestPostList from '@/components/post/LatestPostList';
-import TagList from '@/components/tag/TagList';
 import PostCard from '@/components/post/PostCard';
+import TagList from '@/components/tag/TagList';
+import SearchBox from '@/components/ui/SearchBox';
+import { POSTS_PER_PAGE } from '@/lib/constant';
+import { getLatestPosts, searchPosts } from '@/lib/db/post';
+import { getAllTags } from '@/lib/db/tag';
+import Link from 'next/link';
 
-export const revalidate = 60;
+type Params = {
+  params: Promise<{ page: number }>;
+  searchParams: Promise<{ q: string }>;
+};
 
-const HomePage = async () => {
-  const posts = await getPublishedPosts();
+const Page = async ({ params, searchParams }: Params) => {
+  const { page: currentPage } = await params;
+  const param = await searchParams;
+  const query = param.q;
 
-  if (!posts) return <NotFound />;
+  const posts = await searchPosts(query);
 
-  const paginatedPosts = posts.slice(0, POSTS_PER_PAGE);
+  const paginatedPosts = posts.slice(
+    (currentPage - 1) * POSTS_PER_PAGE,
+    currentPage * POSTS_PER_PAGE
+  );
   const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
 
   const latestPosts = await getLatestPosts();
@@ -23,7 +30,10 @@ const HomePage = async () => {
   const filteredTags = tags.filter(tag => tag.posts.length > 0);
 
   return (
-    <div className="mx-auto container px-4 lg:px-24 py-6 mt-10">
+    <div className="mx-auto container px-4 lg:px-24 mt-10 py-6">
+      <p className="text-gray-600 mb-4">
+        「<span className="font-semibold">{query}</span>」の検索結果
+      </p>
       <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-24">
         <div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-9">
@@ -33,7 +43,18 @@ const HomePage = async () => {
           </div>
           <div className="flex justify-center gap-2 mt-15">
             {Array.from({ length: totalPages }).map((_, i) => {
-              return i === 0 ? (
+              if (i === 0) {
+                return (
+                  <Link
+                    key={i}
+                    href={`/search?q=${encodeURIComponent(query)}`}
+                    className="px-3 py-1 rounded pagination hover:border hover:text-white"
+                  >
+                    {i + 1}
+                  </Link>
+                );
+              }
+              return i === currentPage - 1 ? (
                 <span
                   key={i}
                   className="px-3 py-1 border text-white rounded font-bold bg-indigo-600"
@@ -43,7 +64,7 @@ const HomePage = async () => {
               ) : (
                 <Link
                   key={i}
-                  href={`/pages/${i + 1}`}
+                  href={`/search/${i + 1}?q=${encodeURIComponent(query)}`}
                   className="px-3 py-1 rounded pagination hover:border hover:text-white"
                 >
                   {i + 1}
@@ -64,4 +85,4 @@ const HomePage = async () => {
   );
 };
 
-export default HomePage;
+export default Page;
