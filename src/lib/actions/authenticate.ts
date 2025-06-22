@@ -11,6 +11,9 @@ export const authenticate = async (
   const email = formData.get('email');
   const password = formData.get('password');
 
+  console.log('メアド', email);
+  console.log('パスワード', password);
+
   try {
     await signIn('credentials', {
       email: email,

@@ -1,16 +1,14 @@
-export const dynamic = 'force-dynamic';
-
 import PostDetail from '@/components/post/PostDetail';
 import {
   getLatestPosts,
   getNextPost,
   getPublishedPost,
   getPreviousPost,
+  getPublishedPosts,
 } from '@/lib/db/post';
 import { getAllTags, getTagsByPostIdAndRelatedPosts } from '@/lib/db/tag';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-
 import { Metadata } from 'next';
 import ShareButtons from '@/components/ui/ShareButtons';
 import PostCard from '@/components/post/PostCard';
@@ -56,6 +54,13 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
       images: [`${baseUrl}${post.coverImageUrl}`],
     },
   };
+}
+
+export const revalidate = 60;
+
+export async function generateStaticParams() {
+  const posts = await getPublishedPosts();
+  return posts.map(post => ({ slug: post.slug }));
 }
 
 const PostPage = async ({ params }: Params) => {

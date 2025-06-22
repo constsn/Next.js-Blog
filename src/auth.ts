@@ -17,9 +17,6 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
         const adminEmail = process.env.ADMIN_EMAIL;
         const adminPasswordHash = process.env.ADMIN_PASSWORD_HASH;
 
-        console.log('ADMIN_EMAIL:', process.env.ADMIN_EMAIL);
-        console.log('ADMIN_PASSWORD_HASH:', process.env.ADMIN_PASSWORD_HASH);
-
         if (!adminEmail || !adminPasswordHash) {
           console.error('管理者アカウント情報が設定されていません');
           return null;
@@ -38,6 +35,7 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
         const { email, password } = parsedCredentials.data;
 
         if (email !== adminEmail) {
+          console.log('メアドが違います', email);
           return null;
         }
 
@@ -53,6 +51,7 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
             name: 'shuto',
           };
         } else {
+          console.log('パスワード違います', password);
           return null;
         }
       },
