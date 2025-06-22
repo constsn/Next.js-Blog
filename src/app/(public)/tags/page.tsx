@@ -7,7 +7,6 @@ import Link from 'next/link';
 
 const TagsPage = async () => {
   const tags = await getAllTags();
-  console.log(tags);
   const latestPosts = await getLatestPosts();
 
   const filteredTags = tags.filter(tag => tag.posts.length > 0);

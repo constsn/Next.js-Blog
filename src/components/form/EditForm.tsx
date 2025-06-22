@@ -75,6 +75,11 @@ const EditForm = ({ post }: PostProps) => {
             />
             <input type="hidden" name="id" value={post.id} />
             <input type="hidden" name="tags" value={selectedTags} />
+            <input
+              type="hidden"
+              name="previousImage"
+              value={post.coverImageUrl}
+            />
           </form>
         </div>
         <PostPreview title={title} content={content} imageUrl={imageUrl} />
