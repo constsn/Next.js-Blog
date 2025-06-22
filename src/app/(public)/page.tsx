@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 import { getLatestPosts, getPublishedPosts, searchPosts } from '@/lib/db/post';
 import { getAllTags } from '@/lib/db/tag';
