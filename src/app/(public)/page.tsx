@@ -4,7 +4,6 @@ import { getLatestPosts, getPublishedPosts, searchPosts } from '@/lib/db/post';
 import { getAllTags } from '@/lib/db/tag';
 import { POSTS_PER_PAGE } from '@/lib/constant';
 import Link from 'next/link';
-
 import NotFound from './post/[slug]/not-found';
 import SearchBox from '@/components/ui/SearchBox';
 import LatestPostList from '@/components/post/LatestPostList';
