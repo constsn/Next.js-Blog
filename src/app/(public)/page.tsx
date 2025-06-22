@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { getLatestPosts, getPublishedPosts, searchPosts } from '@/lib/db/post';
 import { getAllTags } from '@/lib/db/tag';
 import { POSTS_PER_PAGE } from '@/lib/constant';

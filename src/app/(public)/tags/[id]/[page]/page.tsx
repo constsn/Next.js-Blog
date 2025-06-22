@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import LatestPostList from '@/components/post/LatestPostList';
 import PostCard from '@/components/post/PostCard';
 import TagList from '@/components/tag/TagList';

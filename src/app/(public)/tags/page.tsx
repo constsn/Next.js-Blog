@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import LatestPostList from '@/components/post/LatestPostList';
 import SearchBox from '@/components/ui/SearchBox';
 import { getLatestPosts } from '@/lib/db/post';

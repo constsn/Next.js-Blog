@@ -1,5 +1,6 @@
-import PostDetail from '@/components/post/PostDetail';
+export const dynamic = 'force-dynamic';
 
+import PostDetail from '@/components/post/PostDetail';
 import {
   getLatestPosts,
   getNextPost,
