@@ -1,7 +1,5 @@
 'use server';
 
-export const runtime = 'nodejs';
-
 import { z } from 'zod';
 import { prisma } from '@/lib/db/prisma';
 import { revalidatePath } from 'next/cache';
