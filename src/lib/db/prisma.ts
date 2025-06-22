@@ -2,10 +2,20 @@ export const runtime = 'nodejs';
 
 import { PrismaClient } from '@prisma/client';
 
-const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined;
-};
+/* eslint-disable no-var */
+declare global {
+  var prisma: PrismaClient | undefined;
+}
+/* eslint-enable no-var */
 
-export const prisma = globalForPrisma.prisma ?? new PrismaClient();
+// グローバルがあれば再利用、なければ新規作成
+const prisma =
+  global.prisma ??
+  new PrismaClient({
+    log: ['error'],
+  });
 
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
+// production環境では再代入しない（lambdaで問題になりうる）
+if (process.env.NODE_ENV !== 'production') global.prisma = prisma;
+
+export { prisma };
