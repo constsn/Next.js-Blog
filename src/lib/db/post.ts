@@ -99,11 +99,16 @@ export const getLatestPosts = async () => {
 
 export const handleDeletePost = async (id: number) => {
   try {
+    await prisma.comment.deleteMany({
+      where: { postId: id },
+    });
+
     await prisma.post.delete({
       where: {
         id,
       },
     });
+
     revalidatePath('/dashboard');
   } catch (err) {
     console.error('記事の削除に失敗しました', err);

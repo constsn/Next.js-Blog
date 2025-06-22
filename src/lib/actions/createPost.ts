@@ -1,9 +1,9 @@
 'use server';
 
 import { redirect } from 'next/navigation';
-import { saveImage } from '../image';
-import { prisma } from '../prisma';
 import { postShema } from '@/schemas/postSchema';
+import { saveImage } from '../storage/image';
+import { prisma } from '../db/prisma';
 
 export type ActionState = {
   success: boolean;

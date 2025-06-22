@@ -4,7 +4,6 @@ import bcryptjs from 'bcryptjs';
 import { z } from 'zod';
 import { authConfig } from './auth.config';
 
-// 認証情報の検証スキーマ
 const credentialsSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8, 'パスワードは8文字以上'),
@@ -15,18 +14,14 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
   providers: [
     Credentials({
       async authorize(credentials) {
-        console.log(credentials);
-
         const adminEmail = process.env.ADMIN_EMAIL;
         const adminPasswordHash = process.env.ADMIN_PASSWORD_HASH;
-        console.log('環境変数', adminEmail, adminPasswordHash);
 
         if (!adminEmail || !adminPasswordHash) {
           console.error('管理者アカウント情報が設定されていません');
           return null;
         }
 
-        // 入力値の検証
         const parsedCredentials = credentialsSchema.safeParse(credentials);
 
         if (!parsedCredentials.success) {
@@ -39,27 +34,22 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
 
         const { email, password } = parsedCredentials.data;
 
-        // メールアドレスの確認
         if (email !== adminEmail) {
-          console.log('メールアドレスが一致しません');
           return null;
         }
 
-        // パスワードの確認
         const passwordsMatch = await bcryptjs.compare(
           password,
           adminPasswordHash
         );
 
         if (passwordsMatch) {
-          console.log('認証成功');
           return {
             id: '1',
             email: adminEmail,
             name: 'shuto',
           };
         } else {
-          console.log('パスワードが一致しません');
           return null;
         }
       },

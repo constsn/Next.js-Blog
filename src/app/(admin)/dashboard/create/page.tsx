@@ -4,8 +4,6 @@ import { getAllTags } from '@/lib/db/tag';
 const Page = async () => {
   const alltags = await getAllTags();
 
-  console.log(alltags);
-
   const popularTags = alltags
     .sort((a, b) => b.posts.length - a.posts.length)
     .slice(0, 5);

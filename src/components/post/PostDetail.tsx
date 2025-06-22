@@ -68,7 +68,7 @@ const PostDetail = ({ post }: Prop) => {
           sizes="100vw "
         />
       </div>
-      <div className="md:max-w-3xl md:mx-auto">
+      <div className="md:max-w-3xl">
         <CardHeader className="px-4 md:px-8">
           <CardDescription className="my-4 tracking-wider">
             {format(new Date(post.createdAt), 'yyyy年M月d日', {

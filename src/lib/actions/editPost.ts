@@ -23,6 +23,7 @@ export const editPost = async (
   const content = formData.get('content') as string;
   const published = formData.get('published') === 'true';
   const coverImageInput = formData.get('coverImageUrl') as File;
+  const previousImage = formData.get('previousImage') as string;
   const tagString = formData.get('tags') as string;
   const tags = tagString.split(',');
 
@@ -43,14 +44,16 @@ export const editPost = async (
     };
   }
 
-  const coverImageUrl = await saveImage(coverImageInput);
+  const coverImageUrl =
+    coverImageInput.size > 0
+      ? ((await saveImage(coverImageInput)) as string)
+      : previousImage;
 
-  if (!coverImageUrl && coverImageInput.size > 0)
+  if (coverImageInput.size > 0 && !coverImageUrl)
     return {
       success: false,
       errors: { coverImageUrl: ['画像の保存に失敗しました'] },
     };
-  console.log('画像保存完了✅');
 
   await prisma.post.update({
     where: {
@@ -71,6 +74,5 @@ export const editPost = async (
     },
   });
 
-  console.log('更新完了⭐️');
   redirect('/');
 };

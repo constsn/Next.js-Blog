@@ -14,9 +14,9 @@ const PostDetailPage = async ({ params }: Prop) => {
   if (!post) return notFound();
 
   return (
-    <div className="py-7 md:mx-auto md:container px-4 lg:px-40 ">
+    <div className="py-7 md:mx-auto md:container px-4 lg:px-24">
       <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-12">
-        <div className="flex flex-col gap-12">
+        <div className="flex flex-col md:max-w-4xl gap-12">
           <PostDetail post={post} />
         </div>
       </div>

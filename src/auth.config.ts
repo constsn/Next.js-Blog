@@ -20,5 +20,5 @@ export const authConfig = {
       return true;
     },
   },
-  providers: [], // プロバイダーは auth.ts で追加
+  providers: [],
 } satisfies NextAuthConfig;
