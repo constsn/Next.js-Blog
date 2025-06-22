@@ -1,19 +1,23 @@
-import { getLatestPosts, getPublishedPosts } from '@/lib/db/post';
-import { getAllTags } from '@/lib/db/tag';
-import { POSTS_PER_PAGE } from '@/lib/constant';
-import Link from 'next/link';
-import NotFound from './post/[slug]/not-found';
-import SearchBox from '@/components/ui/SearchBox';
 import LatestPostList from '@/components/post/LatestPostList';
-import TagList from '@/components/tag/TagList';
 import PostCard from '@/components/post/PostCard';
+import TagList from '@/components/tag/TagList';
+import SearchBox from '@/components/ui/SearchBox';
+import { POSTS_PER_PAGE } from '@/lib/constant';
+import { getLatestPosts, searchPosts } from '@/lib/db/post';
+import { getAllTags } from '@/lib/db/tag';
+import Link from 'next/link';
 
-export const revalidate = 60;
+type SearchParams = {
+  searchParams: Promise<{
+    q?: string;
+  }>;
+};
 
-const HomePage = async () => {
-  const posts = await getPublishedPosts();
+const Page = async ({ searchParams }: SearchParams) => {
+  const params = await searchParams;
+  const query = params.q || '';
 
-  if (!posts) return <NotFound />;
+  const posts = await searchPosts(query);
 
   const paginatedPosts = posts.slice(0, POSTS_PER_PAGE);
   const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
@@ -22,8 +26,18 @@ const HomePage = async () => {
   const tags = await getAllTags();
   const filteredTags = tags.filter(tag => tag.posts.length > 0);
 
+  if (query && posts.length === 0) {
+    return (
+      <div className="p-4 text-gray-500">
+        「{query}」に関する記事は見つかりませんでした。
+      </div>
+    );
+  }
   return (
     <div className="mx-auto container px-4 lg:px-24 py-6 mt-10">
+      <p className="text-gray-600 mb-8 border-b pb-2">
+        「<span className="font-semibold">{query}</span>」の検索結果
+      </p>
       <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-24">
         <div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-9">
@@ -43,7 +57,7 @@ const HomePage = async () => {
               ) : (
                 <Link
                   key={i}
-                  href={`/pages/${i + 1}`}
+                  href={`/search/${i + 1}?q=${encodeURIComponent(query)}`}
                   className="px-3 py-1 rounded pagination hover:border hover:text-white"
                 >
                   {i + 1}
@@ -64,4 +78,4 @@ const HomePage = async () => {
   );
 };
 
-export default HomePage;
+export default Page;
