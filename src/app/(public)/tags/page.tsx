@@ -5,7 +5,7 @@ import { getAllTags } from '@/lib/db/tag';
 import { Tag } from 'lucide-react';
 import Link from 'next/link';
 
-export const dynamic = 'force-static';
+export const revalidate = 60;
 
 const TagsPage = async () => {
   const tags = await getAllTags();

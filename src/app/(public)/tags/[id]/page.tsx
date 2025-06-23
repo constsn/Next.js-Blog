@@ -11,7 +11,7 @@ type Params = {
   params: Promise<{ id: string }>;
 };
 
-export const dynamic = 'force-static';
+export const revalidate = 60;
 
 export async function generateStaticParams() {
   const tags = await getAllTags();
