@@ -41,6 +41,7 @@ export const getTagsByPostIdAndRelatedPosts = async (slug: string) => {
         include: {
           posts: {
             where: {
+              published: true,
               slug: {
                 not: slug,
               },
