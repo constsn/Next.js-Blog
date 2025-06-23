@@ -7,6 +7,8 @@ import { ja } from 'date-fns/locale';
 import { Clock, Eye, Globe, Lock } from 'lucide-react';
 import Link from 'next/link';
 
+export const dynamic = 'force-dynamic';
+
 const Page = async () => {
   const comments = await getComments();
   const adminEmail = process.env.NEXT_PUBLIC_ADMIN_EMAIL;

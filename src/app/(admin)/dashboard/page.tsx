@@ -3,6 +3,8 @@ import { getComments } from '@/lib/db/comment';
 import { getAllPosts } from '@/lib/db/post';
 import { FileText, Globe, Lock, MessageSquare } from 'lucide-react';
 
+export const dynamic = 'force-dynamic';
+
 const DashBoardPage = async () => {
   const posts = await getAllPosts();
   const comments = await getComments();

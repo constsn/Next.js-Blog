@@ -4,6 +4,8 @@ import DashboardPostTable from '@/components/dashboard/DashboardPostTable';
 import { ADMIN_ITEMS_PER_PAGE } from '@/lib/constant';
 import { getAllPosts } from '@/lib/db/post';
 
+export const dynamic = 'force-dynamic';
+
 const Page = async () => {
   const posts = await getAllPosts();
   const paginatedPosts = posts.slice(0, ADMIN_ITEMS_PER_PAGE);
