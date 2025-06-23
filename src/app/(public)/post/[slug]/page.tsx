@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
       type: 'article',
       images: [
         {
-          url: `${baseUrl}${post.coverImageUrl}`,
+          url: `${post.coverImageUrl}`,
           width: 1200,
           height: 630,
           alt: post.title,
@@ -51,7 +51,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
       card: 'summary_large_image',
       title: post.title,
       description: post.content.slice(0, 100),
-      images: [`${baseUrl}${post.coverImageUrl}`],
+      images: [`${post.coverImageUrl}`],
     },
   };
 }

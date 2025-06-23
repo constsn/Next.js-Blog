@@ -1,11 +1,11 @@
-export const dynamic = 'force-dynamic';
-
 import LatestPostList from '@/components/post/LatestPostList';
 import SearchBox from '@/components/ui/SearchBox';
 import { getLatestPosts } from '@/lib/db/post';
 import { getAllTags } from '@/lib/db/tag';
 import { Tag } from 'lucide-react';
 import Link from 'next/link';
+
+export const dynamic = 'force-static';
 
 const TagsPage = async () => {
   const tags = await getAllTags();
@@ -24,7 +24,7 @@ const TagsPage = async () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {filteredTags.map(tag => (
               <Link
-                href={`/tags/${tag.name}`}
+                href={`/tags/${encodeURIComponent(tag.name)}`}
                 key={tag.id}
                 className=" bg-white rounded-lg border-gray-400 px-4 py-4 shadow-xl hover:underline"
               >

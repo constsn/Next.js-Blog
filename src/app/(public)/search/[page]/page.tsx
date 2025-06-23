@@ -1,29 +1,18 @@
 import LatestPostList from '@/components/post/LatestPostList';
-import PostCard from '@/components/post/PostCard';
+import SearchResultPaginated from '@/components/post/SearchResultPaginated';
 import TagList from '@/components/tag/TagList';
 import SearchBox from '@/components/ui/SearchBox';
-import { POSTS_PER_PAGE } from '@/lib/constant';
-import { getLatestPosts, searchPosts } from '@/lib/db/post';
+import { getLatestPosts } from '@/lib/db/post';
 import { getAllTags } from '@/lib/db/tag';
-import Link from 'next/link';
 
 type Params = {
   params: Promise<{ page: number }>;
-  searchParams: Promise<{ q: string }>;
 };
 
-const Page = async ({ params, searchParams }: Params) => {
+export const dynamic = 'force-static';
+
+const Page = async ({ params }: Params) => {
   const { page: currentPage } = await params;
-  const param = await searchParams;
-  const query = param.q;
-
-  const posts = await searchPosts(query);
-
-  const paginatedPosts = posts.slice(
-    (currentPage - 1) * POSTS_PER_PAGE,
-    currentPage * POSTS_PER_PAGE
-  );
-  const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
 
   const latestPosts = await getLatestPosts();
   const tags = await getAllTags();
@@ -31,48 +20,8 @@ const Page = async ({ params, searchParams }: Params) => {
 
   return (
     <div className="mx-auto container px-4 lg:px-24 mt-10 py-6">
-      <p className="text-gray-600 mb-4">
-        「<span className="font-semibold">{query}</span>」の検索結果
-      </p>
       <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-24">
-        <div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-9">
-            {paginatedPosts.map(post => (
-              <PostCard key={post.id} post={post} />
-            ))}
-          </div>
-          <div className="flex justify-center gap-2 mt-15">
-            {Array.from({ length: totalPages }).map((_, i) => {
-              if (i === 0) {
-                return (
-                  <Link
-                    key={i}
-                    href={`/search?q=${encodeURIComponent(query)}`}
-                    className="px-3 py-1 rounded pagination hover:border hover:text-white"
-                  >
-                    {i + 1}
-                  </Link>
-                );
-              }
-              return i === currentPage - 1 ? (
-                <span
-                  key={i}
-                  className="px-3 py-1 border text-white rounded font-bold bg-indigo-600"
-                >
-                  {i + 1}
-                </span>
-              ) : (
-                <Link
-                  key={i}
-                  href={`/search/${i + 1}?q=${encodeURIComponent(query)}`}
-                  className="px-3 py-1 rounded pagination hover:border hover:text-white"
-                >
-                  {i + 1}
-                </Link>
-              );
-            })}
-          </div>
-        </div>
+        <SearchResultPaginated currentPage={currentPage} />
         <div className="flex flex-col gap-16">
           <div className="md:hidden">
             <SearchBox />

@@ -34,7 +34,7 @@ const PostCard = ({ post }: PostProp) => {
       <div className="flex flex-wrap gap-2 items-center px-6 mt-auto mb-3.5">
         <Tag size={14} className="mt-1 font-bold" />
         {post.tags.map(tag => (
-          <Link key={tag.id} href={`/tags/${tag.name}`}>
+          <Link key={tag.id} href={`/tags/${encodeURIComponent(tag.name)}`}>
             <span className="text-xs underline font-medium text-black bg-white transition tag hover:p-1 hover:rounded-full hover:scale-[1.03]">
               {tag.name}
             </span>
