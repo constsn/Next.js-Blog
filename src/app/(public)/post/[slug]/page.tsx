@@ -56,7 +56,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   };
 }
 
-export const revalidate = 60;
+export const revalidate = 30;
 
 export async function generateStaticParams() {
   const posts = await getPublishedPosts();

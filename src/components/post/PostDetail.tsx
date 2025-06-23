@@ -15,7 +15,7 @@ import Link from 'next/link';
 import { Loader2, MessageSquare, Tag as TagIcon } from 'lucide-react';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button } from '../ui/button';
 import CommentThread from '../comment/CommentThread';
 import { getMarkdownTextServer } from '@/lib/markdown/markdown';
@@ -31,7 +31,6 @@ type Prop = {
     createdAt: Date;
     updatedAt: Date;
     tags: Tag[];
-    comments: Comment[];
   };
 };
 
@@ -40,13 +39,27 @@ const PostDetail = ({ post }: Prop) => {
   const [selectedComment, setSelectedComment] = useState<null | Comment[]>(
     null
   );
-  const [comments, setComments] = useState<Comment[]>(post.comments);
+  const [comments, setComments] = useState<Comment[]>([]);
   const [errors, setErrors] = useState<{
     author?: string[];
     content?: string[];
   }>({});
   const [isLoading, setIsLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        const res = await fetch(`/api/comments/${post.id}`);
+        const data = await res.json();
+        setComments(data.comments);
+      } catch (err) {
+        console.error('コメント取得エラー', err);
+      }
+    };
+
+    fetchComments();
+  }, [post.id]);
 
   const handleClick = (commentId: number) => {
     inputRef.current?.focus();

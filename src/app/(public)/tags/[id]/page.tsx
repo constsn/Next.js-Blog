@@ -11,7 +11,7 @@ type Params = {
   params: Promise<{ id: string }>;
 };
 
-export const revalidate = 60;
+export const revalidate = 30;
 
 export async function generateStaticParams() {
   const tags = await getAllTags();
