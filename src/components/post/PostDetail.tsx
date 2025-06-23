@@ -63,8 +63,8 @@ const PostDetail = ({ post }: Prop) => {
     const body = {
       author: form.get('author'),
       content: form.get('content'),
-      postId: post.id,
-      parentId: isSelected,
+      postId: Number(post.id),
+      parentId: Number(isSelected),
     };
 
     try {

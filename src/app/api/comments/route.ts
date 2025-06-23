@@ -16,6 +16,7 @@ export async function POST(req: Request) {
 
   const result = commentSchema.safeParse(formData);
   if (!result.success) {
+    console.error('❌ バリデーション失敗:', result.error.flatten().fieldErrors);
     return NextResponse.json(
       { success: false, errors: result.error.flatten().fieldErrors },
       { status: 400 }
