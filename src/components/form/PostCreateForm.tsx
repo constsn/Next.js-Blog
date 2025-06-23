@@ -10,6 +10,7 @@ import PostPreview from '../post/PostPreview';
 import TagInput from '../tag/TagInput';
 import CoverImageUpload from '../upload/CoverImageUpload';
 import MarkdownEditor from '../post/MarkdownEditor';
+import { useFormStatus } from 'react-dom';
 
 type Prop = {
   popularTags: {
@@ -19,6 +20,21 @@ type Prop = {
       id: number;
     }[];
   }[];
+};
+
+const SubmitButton = () => {
+  const { pending } = useFormStatus();
+
+  return (
+    <Button
+      type="submit"
+      disabled={pending}
+      size="lg"
+      className="mt-4 hover:bg-gray-400 cursor-pointer"
+    >
+      投稿する
+    </Button>
+  );
 };
 
 const PostCreateForm = ({ popularTags }: Prop) => {
@@ -99,13 +115,7 @@ const PostCreateForm = ({ popularTags }: Prop) => {
               published={published}
               onPublished={setPublished}
             />
-            <Button
-              type="submit"
-              size="lg"
-              className="mt-4 hover:bg-gray-400 cursor-pointer"
-            >
-              投稿する
-            </Button>
+            <SubmitButton />
             <input
               type="hidden"
               name="published"
