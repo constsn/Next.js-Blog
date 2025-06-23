@@ -1,6 +1,8 @@
 import PostCreateForm from '@/components/form/PostCreateForm';
 import { getAllTags } from '@/lib/db/tag';
 
+export const dynamic = 'force-dynamic';
+
 const Page = async () => {
   const alltags = await getAllTags();
 

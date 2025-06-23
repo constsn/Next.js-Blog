@@ -11,6 +11,7 @@ import TagInput from '../tag/TagInput';
 import MarkdownEditor from '../post/MarkdownEditor';
 import CoverImageUpload from '../upload/CoverImageUpload';
 import { useFormStatus } from 'react-dom';
+import { Loader2 } from 'lucide-react';
 
 type PostProps = {
   post: Post;
@@ -26,7 +27,14 @@ const SubmitButton = () => {
       size="lg"
       className="mt-4 hover:bg-gray-400 cursor-pointer"
     >
-      投稿する
+      {pending ? (
+        <>
+          <Loader2 className="animate-spin w-4 h-4" />
+          投稿中...
+        </>
+      ) : (
+        '投稿する'
+      )}
     </Button>
   );
 };
