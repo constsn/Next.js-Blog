@@ -8,7 +8,7 @@ import LatestPostList from '@/components/post/LatestPostList';
 import TagList from '@/components/tag/TagList';
 import PostCard from '@/components/post/PostCard';
 
-export const revalidate = 60;
+export const revalidate = 30;
 
 const HomePage = async () => {
   const posts = await getPublishedPosts();

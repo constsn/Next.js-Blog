@@ -35,7 +35,7 @@ export const getPostsByTagName = async (tagName: string) => {
 
 export const getTagsByPostIdAndRelatedPosts = async (slug: string) => {
   return await prisma.post.findUnique({
-    where: { slug },
+    where: { published: true, slug },
     include: {
       tags: {
         include: {

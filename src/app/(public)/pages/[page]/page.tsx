@@ -11,7 +11,7 @@ type Params = {
   params: Promise<{ page: number }>;
 };
 
-export const revalidate = 60;
+export const revalidate = 30;
 
 export async function generateStaticParams() {
   const posts = await getPublishedPosts();

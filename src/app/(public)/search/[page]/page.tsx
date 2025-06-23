@@ -4,7 +4,8 @@ import TagList from '@/components/tag/TagList';
 import SearchBox from '@/components/ui/SearchBox';
 import { getLatestPosts } from '@/lib/db/post';
 import { getAllTags } from '@/lib/db/tag';
-import { Suspense } from 'react';
+
+export const dynamic = 'force-dynamic';
 
 type Params = {
   params: Promise<{ page: number }>;
@@ -20,10 +21,7 @@ const Page = async ({ params }: Params) => {
   return (
     <div className="mx-auto container px-4 lg:px-24 mt-10 py-6">
       <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-24">
-        <Suspense fallback={<div>検索結果を読み込み中...</div>}>
-          <SearchResultPaginated currentPage={currentPage} />
-        </Suspense>
-
+        <SearchResultPaginated currentPage={currentPage} />
         <div className="flex flex-col gap-16">
           <div className="md:hidden">
             <SearchBox />

@@ -27,3 +27,21 @@ export const deleteComment = async (commentId: number) => {
     console.error('コメントの削除に失敗しました', err);
   }
 };
+
+export const getCommentsByPostId = async (postId: number) => {
+  const post = await prisma.post.findUnique({
+    where: {
+      id: postId,
+      published: true,
+    },
+    include: {
+      comments: {
+        orderBy: {
+          createdAt: 'desc',
+        },
+      },
+    },
+  });
+
+  return post?.comments;
+};
