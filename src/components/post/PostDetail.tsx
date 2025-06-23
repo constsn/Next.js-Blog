@@ -12,11 +12,10 @@ import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import type { Comment, Tag } from '@/types/post';
 import Link from 'next/link';
-import { MessageSquare, Tag as TagIcon } from 'lucide-react';
+import { Loader2, MessageSquare, Tag as TagIcon } from 'lucide-react';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
-import { useActionState, useRef, useState } from 'react';
-import { createComment } from '@/lib/actions/createComment';
+import { useRef, useState } from 'react';
 import { Button } from '../ui/button';
 import CommentThread from '../comment/CommentThread';
 import { getMarkdownTextServer } from '@/lib/markdown/markdown';
@@ -37,16 +36,16 @@ type Prop = {
 };
 
 const PostDetail = ({ post }: Prop) => {
-  const [state, formAction] = useActionState(createComment, {
-    success: false,
-    errors: {},
-  });
-
   const [isSelected, setIsSelected] = useState<number | null>(null);
   const [selectedComment, setSelectedComment] = useState<null | Comment[]>(
     null
   );
-
+  const [comments, setComments] = useState<Comment[]>(post.comments);
+  const [errors, setErrors] = useState<{
+    author?: string[];
+    content?: string[];
+  }>({});
+  const [isLoading, setIsLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleClick = (commentId: number) => {
@@ -55,6 +54,44 @@ const PostDetail = ({ post }: Prop) => {
     setSelectedComment(
       post.comments.filter(comment => comment.id === commentId)
     );
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setErrors({});
+    setIsLoading(true);
+
+    const form = new FormData(e.currentTarget);
+    const body = {
+      author: form.get('author'),
+      content: form.get('content'),
+      postId: post.id,
+      parentId: isSelected,
+    };
+
+    try {
+      const res = await fetch('/api/comments', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        setErrors(data.errors || {});
+      } else {
+        setComments(prev => [...prev, data.comment]);
+        (e.target as HTMLFormElement).reset();
+        setIsSelected(null);
+        setSelectedComment(null);
+      }
+    } catch (err) {
+      console.error('投稿失敗', err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -123,7 +160,7 @@ const PostDetail = ({ post }: Prop) => {
         )}
         <div className="px-6">
           <div className="border border-gray-300 rounded-2xl py-6 px-12">
-            <form action={formAction} className="flex flex-col gap-6">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-6">
               <div>
                 <Label htmlFor="author" className="text-lg">
                   名前
@@ -135,9 +172,9 @@ const PostDetail = ({ post }: Prop) => {
                   className="border-gray-300"
                   ref={inputRef}
                 />
-                {state.errors.author && (
+                {errors.author && (
                   <p className="text-red-500 text-sm mt-1">
-                    {state.errors.author.join('')}
+                    {errors.author.join('')}
                   </p>
                 )}
               </div>
@@ -151,14 +188,27 @@ const PostDetail = ({ post }: Prop) => {
                   rows={6}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md resize-none"
                 />
-                {state.errors.content && (
+                {errors.content && (
                   <p className="text-red-500 text-sm mt-1">
-                    {state.errors.content.join('')}
+                    {errors.content.join('')}
                   </p>
                 )}
               </div>
-              <Button type="submit" className="hover:bg-gray-300">
-                {isSelected ? '返信する' : '送信'}{' '}
+              <Button
+                type="submit"
+                disabled={isLoading}
+                className="hover:bg-gray-300"
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    処理中...
+                  </>
+                ) : isSelected ? (
+                  '返信する'
+                ) : (
+                  '送信'
+                )}
               </Button>
               <input type="hidden" name="postSlug" value={post.slug} />
               <input type="hidden" name="postId" value={post.id} />
@@ -169,13 +219,13 @@ const PostDetail = ({ post }: Prop) => {
           </div>
           {post.comments.length > 0 && (
             <div className="space-y-4 mt-16">
-              {post.comments
+              {comments
                 .filter(comment => comment.parentId === null)
                 .map(comment => (
                   <CommentThread
                     key={comment.id}
                     comment={comment}
-                    allComments={post.comments}
+                    allComments={comments}
                     onReplyClick={handleClick}
                   />
                 ))}

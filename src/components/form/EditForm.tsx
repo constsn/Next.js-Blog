@@ -10,9 +10,25 @@ import PostPreview from '../post/PostPreview';
 import TagInput from '../tag/TagInput';
 import MarkdownEditor from '../post/MarkdownEditor';
 import CoverImageUpload from '../upload/CoverImageUpload';
+import { useFormStatus } from 'react-dom';
 
 type PostProps = {
   post: Post;
+};
+
+const SubmitButton = () => {
+  const { pending } = useFormStatus();
+
+  return (
+    <Button
+      type="submit"
+      disabled={pending}
+      size="lg"
+      className="mt-4 hover:bg-gray-400 cursor-pointer"
+    >
+      投稿する
+    </Button>
+  );
 };
 
 const EditForm = ({ post }: PostProps) => {
@@ -61,13 +77,7 @@ const EditForm = ({ post }: PostProps) => {
               published={published}
               onPublished={setPublished}
             />
-            <Button
-              type="submit"
-              size="lg"
-              className="w-full mt-4 hover:bg-gray-400 cursor-pointer"
-            >
-              投稿する
-            </Button>
+            <SubmitButton />
             <input
               type="hidden"
               name="published"
