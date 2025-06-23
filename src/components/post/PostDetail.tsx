@@ -51,9 +51,7 @@ const PostDetail = ({ post }: Prop) => {
   const handleClick = (commentId: number) => {
     inputRef.current?.focus();
     setIsSelected(commentId);
-    setSelectedComment(
-      post.comments.filter(comment => comment.id === commentId)
-    );
+    setSelectedComment(comments.filter(comment => comment.id === commentId));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -82,7 +80,12 @@ const PostDetail = ({ post }: Prop) => {
       if (!res.ok) {
         setErrors(data.errors || {});
       } else {
-        setComments(prev => [...prev, data.comment]);
+        setComments(prev =>
+          [...prev, data.comment].sort(
+            (a, b) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          )
+        );
         (e.target as HTMLFormElement).reset();
         setIsSelected(null);
         setSelectedComment(null);
@@ -143,7 +146,7 @@ const PostDetail = ({ post }: Prop) => {
           <MessageSquare size={24} className="text-blue-500" />
           <h2 className="text-xl">
             コメント
-            {post.comments.length > 0 ? `(${post.comments.length})` : ''}
+            {comments.length > 0 ? `(${comments.length})` : ''}
           </h2>
         </div>
         {isSelected && selectedComment && (
@@ -210,14 +213,9 @@ const PostDetail = ({ post }: Prop) => {
                   '送信'
                 )}
               </Button>
-              <input type="hidden" name="postSlug" value={post.slug} />
-              <input type="hidden" name="postId" value={post.id} />
-              {isSelected && (
-                <input type="hidden" name="parentId" value={isSelected} />
-              )}
             </form>
           </div>
-          {post.comments.length > 0 && (
+          {comments.length > 0 && (
             <div className="space-y-4 mt-16">
               {comments
                 .filter(comment => comment.parentId === null)
