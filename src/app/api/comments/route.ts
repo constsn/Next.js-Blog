@@ -30,7 +30,7 @@ export async function POST(req: Request) {
       author,
       content,
       postId,
-      parentId,
+      ...(parentId && { parentId }),
       authorEmail: session?.user?.email ?? 'anonymous@unknown.com',
     },
   });
