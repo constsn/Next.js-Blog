@@ -120,6 +120,7 @@ export const searchPosts = async (search: string) => {
 
   return await prisma.post.findMany({
     where: {
+      published: true,
       AND: searchWords.map(word => ({
         OR: [
           {
