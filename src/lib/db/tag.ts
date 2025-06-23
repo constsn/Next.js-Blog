@@ -5,7 +5,11 @@ import { prisma } from './prisma';
 export const getAllTags = async () => {
   return await prisma.tag.findMany({
     include: {
-      posts: true,
+      posts: {
+        where: {
+          published: true,
+        },
+      },
     },
     orderBy: { name: 'asc' },
   });
@@ -18,6 +22,7 @@ export const getPostsByTagName = async (tagName: string) => {
     },
     include: {
       posts: {
+        where: { published: true },
         include: {
           tags: true,
         },
