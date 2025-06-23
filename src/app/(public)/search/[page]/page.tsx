@@ -9,7 +9,7 @@ type Params = {
   params: Promise<{ page: number }>;
 };
 
-export const dynamic = 'force-static';
+export const revalidate = 60;
 
 const Page = async ({ params }: Params) => {
   const { page: currentPage } = await params;

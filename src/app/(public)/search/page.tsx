@@ -5,7 +5,7 @@ import SearchBox from '@/components/ui/SearchBox';
 import { getLatestPosts } from '@/lib/db/post';
 import { getAllTags } from '@/lib/db/tag';
 
-export const dynamic = 'force-static';
+export const revalidate = 60;
 
 const Page = async () => {
   const latestPosts = await getLatestPosts();
