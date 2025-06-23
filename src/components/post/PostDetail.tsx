@@ -64,7 +64,7 @@ const PostDetail = ({ post }: Prop) => {
       author: form.get('author'),
       content: form.get('content'),
       postId: Number(post.id),
-      parentId: Number(isSelected),
+      ...(isSelected !== null && { parentId: isSelected }),
     };
 
     try {
