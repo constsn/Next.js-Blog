@@ -26,6 +26,7 @@ type Prop = {
     id: number;
     title: string;
     content: string;
+    slug: string;
     published: boolean;
     coverImageUrl: string;
     createdAt: Date;
@@ -94,7 +95,7 @@ const PostDetail = ({ post }: Prop) => {
         </div>
         <div className="flex flex-wrap gap-4 px-6 mt-8">
           {post.tags.map(tag => (
-            <Link key={tag.id} href={`/tags/${tag.name}`}>
+            <Link key={tag.id} href={`/tags/${encodeURIComponent(tag.name)}`}>
               <span className="text-sm px-5 py-1 font-medium text-white bg-gray-800 transition hover:bg-gray-300 hover:shadow-sm hover:scale-[1.03] rounded-full">
                 {tag.name}
               </span>
@@ -159,6 +160,7 @@ const PostDetail = ({ post }: Prop) => {
               <Button type="submit" className="hover:bg-gray-300">
                 {isSelected ? '返信する' : '送信'}{' '}
               </Button>
+              <input type="hidden" name="postSlug" value={post.slug} />
               <input type="hidden" name="postId" value={post.id} />
               {isSelected && (
                 <input type="hidden" name="parentId" value={isSelected} />

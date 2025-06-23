@@ -17,11 +17,10 @@ const TagList = ({ tags }: Prop) => (
       <Tag />
       <h2 className="text-lg ">タグ一覧</h2>
     </div>
-
     <div className="flex flex-wrap gap-4 mt-4">
       {tags.map(tag => (
         <Link
-          href={`/tags/${tag.name}`}
+          href={`/tags/${encodeURIComponent(tag.name)}`}
           key={tag.id}
           className="px-3 py-1 bg-gray-100 text-sm font-medium tag hover:text-white rounded-full"
         >

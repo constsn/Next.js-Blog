@@ -20,6 +20,7 @@ export const createComment = async (
   const author = formData.get('author') as string;
   const content = formData.get('content') as string;
   const postId = formData.get('postId');
+  const postSlug = formData.get('postSlug') as string;
   const parentId = formData.get('parentId');
 
   const session = await auth();
@@ -59,7 +60,7 @@ export const createComment = async (
     });
   }
 
-  revalidatePath(`/post/${postId}`);
+  revalidatePath(`/post/${encodeURIComponent(postSlug)}`);
 
   return { success: true, errors: {} };
 };

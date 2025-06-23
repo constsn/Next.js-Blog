@@ -1,5 +1,3 @@
-export const dynamic = 'force-dynamic';
-
 import LatestPostList from '@/components/post/LatestPostList';
 import PostCard from '@/components/post/PostCard';
 import TagList from '@/components/tag/TagList';
@@ -12,6 +10,29 @@ import Link from 'next/link';
 type Params = {
   params: Promise<{ page: number; id: string }>;
 };
+
+export const dynamic = 'force-static';
+
+export async function generateStaticParams() {
+  const tags = await getAllTags();
+
+  const params = [];
+
+  for (const tag of tags) {
+    const tagName = encodeURIComponent(tag.name);
+    const posts = await getPostsByTagName(tag.name);
+    const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
+
+    for (let page = 2; page <= totalPages; page++) {
+      params.push({
+        id: tagName,
+        page: page.toString(),
+      });
+    }
+  }
+
+  return params;
+}
 
 const Page = async ({ params }: Params) => {
   const { page: currentPage, id } = await params;
@@ -48,7 +69,7 @@ const Page = async ({ params }: Params) => {
                 return (
                   <Link
                     key={i}
-                    href={`/tags/${id}`}
+                    href={`/tags/${encodeURIComponent(id)}`}
                     className="px-3 py-1 rounded pagination hover:border hover:text-white"
                   >
                     {i + 1}
@@ -65,7 +86,7 @@ const Page = async ({ params }: Params) => {
               ) : (
                 <Link
                   key={i}
-                  href={`/tags/${id}/${i + 1}`}
+                  href={`/tags/${encodeURIComponent(id)}/${i + 1}`}
                   className="px-3 py-1 rounded pagination hover:border hover:text-white"
                 >
                   {i + 1}
@@ -78,7 +99,6 @@ const Page = async ({ params }: Params) => {
           <div className="md:hidden">
             <SearchBox />
           </div>
-
           <LatestPostList posts={latestPosts} />
           <TagList tags={filteredTags} />
         </div>
