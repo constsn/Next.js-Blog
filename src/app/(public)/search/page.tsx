@@ -8,15 +8,16 @@ import { getAllTags } from '@/lib/db/tag';
 export const dynamic = 'force-dynamic';
 
 const Page = async () => {
-  const latestPosts = await getLatestPosts();
-  const tags = await getAllTags();
-  const filteredTags = tags.filter(tag => tag.posts.length > 0);
+  const [latestPosts, tags] = await Promise.all([
+    getLatestPosts(),
+    getAllTags(),
+  ]);
 
+  const filteredTags = tags.filter(tag => tag.posts.length > 0);
   return (
     <div className="mx-auto container px-4 lg:px-24 py-6 mt-10">
       <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-24">
         <SearchResult />
-
         <div className="flex flex-col gap-16">
           <div className="md:hidden">
             <SearchBox />

@@ -1,10 +1,8 @@
 import PostDetail from '@/components/post/PostDetail';
 import {
-  getLatestPosts,
-  getNextPost,
   getPublishedPost,
-  getPreviousPost,
   getPublishedPosts,
+  getLatestPosts,
 } from '@/lib/db/post';
 import { getAllTags, getTagsByPostIdAndRelatedPosts } from '@/lib/db/tag';
 import Link from 'next/link';
@@ -13,9 +11,9 @@ import { Metadata } from 'next';
 import ShareButtons from '@/components/ui/ShareButtons';
 import PostCard from '@/components/post/PostCard';
 import SearchBox from '@/components/ui/SearchBox';
+import { FileText } from 'lucide-react';
 import LatestPostList from '@/components/post/LatestPostList';
 import TagList from '@/components/tag/TagList';
-import { FileText } from 'lucide-react';
 
 type Params = {
   params: Promise<{ slug: string }>;
@@ -67,13 +65,23 @@ const PostPage = async ({ params }: Params) => {
   const { slug: encodeSlug } = await params;
   const slug = decodeURIComponent(encodeSlug);
 
-  const post = await getPublishedPost(slug);
+  const [post, allPosts, latestPosts, tags] = await Promise.all([
+    getPublishedPost(slug),
+    getPublishedPosts(),
+    getLatestPosts(),
+    getAllTags(),
+  ]);
+
   if (!post) return notFound();
-
-  const latestPosts = await getLatestPosts();
-
-  const tags = await getAllTags();
+  const currentUrl = `${baseUrl}/post/${post.slug}`;
   const filteredTags = tags.filter(tag => tag.posts.length > 0);
+
+  const index = allPosts.findIndex(p => p.slug === slug);
+
+  const previousPost = allPosts[index + 1];
+  const nextPost = allPosts[index - 1];
+  const previousSlug = previousPost?.slug ?? null;
+  const nextSlug = nextPost?.slug ?? null;
 
   const tagsWithPosts = await getTagsByPostIdAndRelatedPosts(slug);
 
@@ -88,11 +96,6 @@ const PostPage = async ({ params }: Params) => {
     )
     .slice(0, 3);
 
-  const previousPostSlug = await getPreviousPost(post.updatedAt);
-  const nextPostSlug = await getNextPost(post.updatedAt);
-
-  const currentUrl = `${baseUrl}/post/${post.slug}`;
-
   return (
     <div className="py-7 md:mx-auto md:container lg:px-24 mt-10">
       <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-24">
@@ -102,9 +105,9 @@ const PostPage = async ({ params }: Params) => {
             <ShareButtons title={post.title} url={currentUrl} />
           </div>
           <div className="flex justify-between items-center mt-6 px-6 md:px-14 pt-6 text-sm text-white">
-            {previousPostSlug ? (
+            {previousSlug ? (
               <Link
-                href={`/post/${encodeURIComponent(previousPostSlug)}`}
+                href={`/post/${encodeURIComponent(previousSlug)}`}
                 className="px-4 py-2 border bg-gray-900 hover:bg-gray-300 rounded-md"
               >
                 ◀ 前の記事
@@ -113,9 +116,9 @@ const PostPage = async ({ params }: Params) => {
               <span />
             )}
 
-            {nextPostSlug ? (
+            {nextSlug ? (
               <Link
-                href={`/post/${encodeURIComponent(nextPostSlug)}`}
+                href={`/post/${encodeURIComponent(nextSlug)}`}
                 className="px-4 py-2 border bg-gray-900 hover:bg-gray-300 rounded-md"
               >
                 次の記事 ▶

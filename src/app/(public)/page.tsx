@@ -1,26 +1,26 @@
 import { getLatestPosts, getPublishedPosts } from '@/lib/db/post';
-import { getAllTags } from '@/lib/db/tag';
 import { POSTS_PER_PAGE } from '@/lib/constant';
 import Link from 'next/link';
 import NotFound from './post/[slug]/not-found';
 import SearchBox from '@/components/ui/SearchBox';
+import PostCard from '@/components/post/PostCard';
+import { getAllTags } from '@/lib/db/tag';
 import LatestPostList from '@/components/post/LatestPostList';
 import TagList from '@/components/tag/TagList';
-import PostCard from '@/components/post/PostCard';
 
 export const revalidate = 30;
 
 const HomePage = async () => {
-  const posts = await getPublishedPosts();
+  const [posts, latestPosts, tags] = await Promise.all([
+    getPublishedPosts(),
+    getLatestPosts(),
+    getAllTags(),
+  ]);
 
   if (!posts) return <NotFound />;
-
+  const filteredTags = tags.filter(tag => tag.posts.length > 0);
   const paginatedPosts = posts.slice(0, POSTS_PER_PAGE);
   const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
-
-  const latestPosts = await getLatestPosts();
-  const tags = await getAllTags();
-  const filteredTags = tags.filter(tag => tag.posts.length > 0);
 
   return (
     <div className="mx-auto container px-4 lg:px-24 py-6 mt-10">
