@@ -12,7 +12,7 @@ import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import type { Comment, Tag } from '@/types/post';
 import Link from 'next/link';
-import { Loader2, MessageSquare, Tag as TagIcon } from 'lucide-react';
+import { Clock, Loader2, MessageSquare, Tag as TagIcon } from 'lucide-react';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { useEffect, useRef, useState } from 'react';
@@ -124,10 +124,15 @@ const PostDetail = ({ post }: Prop) => {
       </div>
       <div className="md:max-w-3xl">
         <CardHeader className="px-4 md:px-8">
-          <CardDescription className="my-4 tracking-wider">
-            {format(new Date(post.createdAt), 'yyyy年M月d日', {
-              locale: ja,
-            })}
+          <CardDescription className="my-8 tracking-wider">
+            <div className="flex items-center gap-1">
+              <Clock className="w-4 h-4 mr-2 text-gray-400" />
+              <p>
+                {format(new Date(post.createdAt), 'yyyy年M月d日', {
+                  locale: ja,
+                })}
+              </p>
+            </div>
           </CardDescription>
           <CardTitle className="text-3xl mb-6 tracking-wider">
             {post.title}
