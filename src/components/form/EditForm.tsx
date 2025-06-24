@@ -10,38 +10,15 @@ import PostPreview from '../post/PostPreview';
 import TagInput from '../tag/TagInput';
 import MarkdownEditor from '../post/MarkdownEditor';
 import CoverImageUpload from '../upload/CoverImageUpload';
-import { useFormStatus } from 'react-dom';
 import { Loader2 } from 'lucide-react';
 
 type PostProps = {
   post: Post;
 };
 
-const SubmitButton = () => {
-  const { pending } = useFormStatus();
-
-  return (
-    <Button
-      type="submit"
-      disabled={pending}
-      size="lg"
-      className="mt-4 hover:bg-gray-400 cursor-pointer"
-    >
-      {pending ? (
-        <>
-          <Loader2 className="animate-spin w-4 h-4" />
-          投稿中...
-        </>
-      ) : (
-        '投稿する'
-      )}
-    </Button>
-  );
-};
-
 const EditForm = ({ post }: PostProps) => {
   const tagNames = post.tags.map(tag => tag.name);
-  const [state, formAction] = useActionState(editPost, {
+  const [state, formAction, isPending] = useActionState(editPost, {
     success: false,
     errors: {},
   });
@@ -85,7 +62,21 @@ const EditForm = ({ post }: PostProps) => {
               published={published}
               onPublished={setPublished}
             />
-            <SubmitButton />
+            <Button
+              type="submit"
+              disabled={isPending}
+              size="lg"
+              className="mt-4 hover:bg-gray-400 cursor-pointer"
+            >
+              {isPending ? (
+                <>
+                  <Loader2 className="animate-spin w-4 h-4" />
+                  投稿中...
+                </>
+              ) : (
+                '投稿する'
+              )}
+            </Button>
             <input
               type="hidden"
               name="published"

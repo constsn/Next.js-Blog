@@ -10,7 +10,6 @@ import PostPreview from '../post/PostPreview';
 import TagInput from '../tag/TagInput';
 import CoverImageUpload from '../upload/CoverImageUpload';
 import MarkdownEditor from '../post/MarkdownEditor';
-import { useFormStatus } from 'react-dom';
 import { Loader2 } from 'lucide-react';
 
 type Prop = {
@@ -23,30 +22,8 @@ type Prop = {
   }[];
 };
 
-const SubmitButton = () => {
-  const { pending } = useFormStatus();
-
-  return (
-    <Button
-      type="submit"
-      disabled={pending}
-      size="lg"
-      className="mt-4 hover:bg-gray-400 cursor-pointer"
-    >
-      {pending ? (
-        <>
-          <Loader2 className="animate-spin w-4 h-4" />
-          投稿中...
-        </>
-      ) : (
-        '投稿する'
-      )}
-    </Button>
-  );
-};
-
 const PostCreateForm = ({ popularTags }: Prop) => {
-  const [state, formAction] = useActionState(createPost, {
+  const [state, formAction, isPending] = useActionState(createPost, {
     success: false,
     errors: {},
   });
@@ -123,7 +100,21 @@ const PostCreateForm = ({ popularTags }: Prop) => {
               published={published}
               onPublished={setPublished}
             />
-            <SubmitButton />
+            <Button
+              type="submit"
+              disabled={isPending}
+              size="lg"
+              className="mt-4 hover:bg-gray-400 cursor-pointer"
+            >
+              {isPending ? (
+                <>
+                  <Loader2 className="animate-spin w-4 h-4" />
+                  投稿中...
+                </>
+              ) : (
+                '投稿する'
+              )}
+            </Button>
             <input
               type="hidden"
               name="published"
