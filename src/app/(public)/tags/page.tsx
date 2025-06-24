@@ -8,8 +8,10 @@ import Link from 'next/link';
 export const revalidate = 30;
 
 const TagsPage = async () => {
-  const tags = await getAllTags();
-  const latestPosts = await getLatestPosts();
+  const [latestPosts, tags] = await Promise.all([
+    getLatestPosts(),
+    getAllTags(),
+  ]);
 
   const filteredTags = tags.filter(tag => tag.posts.length > 0);
 

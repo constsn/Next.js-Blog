@@ -14,8 +14,11 @@ type Params = {
 const Page = async ({ params }: Params) => {
   const { page: currentPage } = await params;
 
-  const latestPosts = await getLatestPosts();
-  const tags = await getAllTags();
+  const [latestPosts, tags] = await Promise.all([
+    getLatestPosts(),
+    getAllTags(),
+  ]);
+
   const filteredTags = tags.filter(tag => tag.posts.length > 0);
 
   return (
