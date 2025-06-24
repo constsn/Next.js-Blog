@@ -7,14 +7,16 @@ import PostCard from '@/components/post/PostCard';
 import { getAllTags } from '@/lib/db/tag';
 import LatestPostList from '@/components/post/LatestPostList';
 import TagList from '@/components/tag/TagList';
+import pLimit from 'p-limit';
 
 export const revalidate = 30;
 
 const HomePage = async () => {
+  const limit = pLimit(2);
   const [posts, latestPosts, tags] = await Promise.all([
-    getPublishedPosts(),
-    getLatestPosts(),
-    getAllTags(),
+    limit(() => getPublishedPosts()),
+    limit(() => getLatestPosts()),
+    limit(() => getAllTags()),
   ]);
 
   if (!posts) return <NotFound />;

@@ -6,6 +6,7 @@ import SearchBox from '@/components/ui/SearchBox';
 import { POSTS_PER_PAGE } from '@/lib/constant';
 import { getLatestPosts, getPublishedPosts } from '@/lib/db/post';
 import { getAllTags } from '@/lib/db/tag';
+import pLimit from 'p-limit';
 
 type Params = {
   params: Promise<{ page: number }>;
@@ -25,10 +26,12 @@ export async function generateStaticParams() {
 const Page = async ({ params }: Params) => {
   const { page: currentPage } = await params;
 
+  const limit = pLimit(2);
+
   const [posts, latestPosts, tags] = await Promise.all([
-    getPublishedPosts(),
-    getLatestPosts(),
-    getAllTags(),
+    limit(() => getPublishedPosts()),
+    limit(() => getLatestPosts()),
+    limit(() => getAllTags()),
   ]);
 
   const filteredTags = tags.filter(tag => tag.posts.length > 0);

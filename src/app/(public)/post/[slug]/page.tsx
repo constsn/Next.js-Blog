@@ -14,6 +14,7 @@ import SearchBox from '@/components/ui/SearchBox';
 import { FileText } from 'lucide-react';
 import LatestPostList from '@/components/post/LatestPostList';
 import TagList from '@/components/tag/TagList';
+import pLimit from 'p-limit';
 
 type Params = {
   params: Promise<{ slug: string }>;
@@ -65,11 +66,13 @@ const PostPage = async ({ params }: Params) => {
   const { slug: encodeSlug } = await params;
   const slug = decodeURIComponent(encodeSlug);
 
+  const limit = pLimit(2);
+
   const [post, allPosts, latestPosts, tags] = await Promise.all([
-    getPublishedPost(slug),
-    getPublishedPosts(),
-    getLatestPosts(),
-    getAllTags(),
+    limit(() => getPublishedPost(slug)),
+    limit(() => getPublishedPosts()),
+    limit(() => getLatestPosts()),
+    limit(() => getAllTags()),
   ]);
 
   if (!post) return notFound();

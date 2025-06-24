@@ -6,6 +6,7 @@ import { POSTS_PER_PAGE } from '@/lib/constant';
 import { getLatestPosts } from '@/lib/db/post';
 import { getAllTags, getPostsByTagName } from '@/lib/db/tag';
 import Link from 'next/link';
+import pLimit from 'p-limit';
 
 type Params = {
   params: Promise<{ page: number; id: string }>;
@@ -38,10 +39,12 @@ const Page = async ({ params }: Params) => {
   const { page: currentPage, id } = await params;
   const tagName = decodeURIComponent(id);
 
+  const limit = pLimit(2);
+
   const [posts, latestPosts, tags] = await Promise.all([
-    getPostsByTagName(tagName),
-    getLatestPosts(),
-    getAllTags(),
+    limit(() => getPostsByTagName(tagName)),
+    limit(() => getLatestPosts()),
+    limit(() => getAllTags()),
   ]);
 
   const filteredTags = tags.filter(tag => tag.posts.length > 0);
