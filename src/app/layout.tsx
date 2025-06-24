@@ -33,6 +33,9 @@ export const metadata: Metadata = {
     description: 'Web開発や技術に関する情報を発信中。',
     images: [`${baseUrl}/ogp.png`],
   },
+  icons: {
+    icon: '/favicon.ico',
+  },
   robots: {
     index: true,
     follow: true,
