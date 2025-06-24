@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { Input } from './input';
 import { Search } from 'lucide-react';
@@ -9,11 +9,16 @@ const SearchBox = () => {
   const [input, setInput] = useState('');
   const router = useRouter();
 
+  const [isPending, startTransition] = useTransition();
+
   const hanldeSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim()) return;
     setInput('');
-    router.push(`/search?q=${encodeURIComponent(input)}`);
+
+    startTransition(() => {
+      router.push(`/search?q=${encodeURIComponent(input)}`);
+    });
   };
 
   return (
@@ -30,7 +35,7 @@ const SearchBox = () => {
         type="submit"
         className="cursor-pointer text-white search py-1 px-3 rounded-full"
       >
-        <Search />
+        {isPending ? '検索中...' : <Search />}
       </button>
     </form>
   );

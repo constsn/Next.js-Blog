@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react';
 import PostCard from './PostCard';
 import { Post } from '@/types/post';
 
+const cache: { [query: string]: Post[] } = {};
+
 const SearchResult = () => {
   const searchParams = useSearchParams();
   const query = searchParams.get('q') ?? '';
@@ -15,6 +17,12 @@ const SearchResult = () => {
 
   useEffect(() => {
     if (!query) return;
+
+    if (cache[query]) {
+      setPosts(cache[query]);
+      return;
+    }
+
     const fetchData = async () => {
       setIsLoading(true);
       try {
@@ -23,6 +31,7 @@ const SearchResult = () => {
         });
         const data = await res.json();
         setPosts(data);
+        cache[query] = data;
       } catch (err) {
         console.error('検索エラー', err);
       } finally {
@@ -37,7 +46,7 @@ const SearchResult = () => {
 
   if (!query)
     return <p className="text-gray-500">キーワードを入力してください。</p>;
-  if (isLoading) return <p className="text-gray-500">読み込み中...</p>;
+  if (isLoading) return <p className="text-gray-500 ">読み込み中...</p>;
   if (!isLoading && posts.length === 0)
     return (
       <p className="text-gray-500">「{query}」に一致する記事はありません。</p>

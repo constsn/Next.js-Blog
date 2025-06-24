@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react';
 import PostCard from './PostCard';
 import Link from 'next/link';
 
+const cache: { [query: string]: Post[] } = {};
+
 type Prop = {
   currentPage: number;
 };
@@ -19,6 +21,12 @@ const SearchResultPaginated = ({ currentPage }: Prop) => {
 
   useEffect(() => {
     if (!query) return;
+
+    if (cache[query]) {
+      setPosts(cache[query]);
+      return;
+    }
+
     const fetchData = async () => {
       setIsLoading(true);
       try {
@@ -27,6 +35,7 @@ const SearchResultPaginated = ({ currentPage }: Prop) => {
         });
         const data = await res.json();
         setPosts(data);
+        cache[query] = data;
       } catch (err) {
         console.error('検索エラー', err);
       } finally {
