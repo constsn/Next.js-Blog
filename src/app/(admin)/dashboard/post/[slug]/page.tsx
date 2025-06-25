@@ -1,10 +1,17 @@
 import PostDetail from '@/components/post/PostDetail';
-import { getAnyPost } from '@/lib/db/post';
+import { getAnyPost, getPublishedPosts } from '@/lib/db/post';
 import { notFound } from 'next/navigation';
 
 type Prop = {
   params: Promise<{ slug: string }>;
 };
+
+export const revalidate = 30;
+
+export async function generateStaticParams() {
+  const posts = await getPublishedPosts();
+  return posts.map(post => ({ slug: post.slug }));
+}
 
 const PostDetailPage = async ({ params }: Prop) => {
   const { slug: encodeSlug } = await params;
