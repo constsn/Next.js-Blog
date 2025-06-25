@@ -2,8 +2,8 @@ import LatestPostList from '@/components/post/LatestPostList';
 import SearchResultPaginated from '@/components/post/SearchResultPaginated';
 import TagList from '@/components/tag/TagList';
 import SearchBox from '@/components/ui/SearchBox';
-import { getLatestPosts } from '@/lib/db/post';
-import { getAllTags } from '@/lib/db/tag';
+import NotFound from '../../post/[slug]/not-found';
+import { getBasePageData } from '@/lib/pageData';
 
 export const dynamic = 'force-dynamic';
 
@@ -14,12 +14,10 @@ type Params = {
 const Page = async ({ params }: Params) => {
   const { page: currentPage } = await params;
 
-  const [latestPosts, tags] = await Promise.all([
-    getLatestPosts(),
-    getAllTags(),
-  ]);
+  const data = await getBasePageData();
+  if (!data) return <NotFound />;
 
-  const filteredTags = tags.filter(tag => tag.posts.length > 0);
+  const { latestPosts, uniqueTagsByName } = data;
 
   return (
     <div className="mx-auto container px-4 lg:px-24 mt-10 py-6">
@@ -30,7 +28,7 @@ const Page = async ({ params }: Params) => {
             <SearchBox />
           </div>
           <LatestPostList posts={latestPosts} />
-          <TagList tags={filteredTags} />
+          <TagList tags={uniqueTagsByName} />
         </div>
       </div>
     </div>

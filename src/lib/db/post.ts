@@ -9,48 +9,27 @@ export const getPublishedPosts = async () => {
       published: true,
     },
     include: {
-      tags: true,
-    },
-    orderBy: {
-      updatedAt: 'desc',
-    },
-  });
-};
-
-export const getPreviousPost = async (updatedAt: Date) => {
-  const previousPost = await prisma.post.findFirst({
-    where: {
-      published: true,
-      updatedAt: {
-        lt: updatedAt,
+      tags: {
+        include: {
+          posts: {
+            include: {
+              tags: true,
+            },
+          },
+        },
       },
     },
     orderBy: {
       updatedAt: 'desc',
     },
   });
-
-  return previousPost?.slug;
-};
-
-export const getNextPost = async (updatedAt: Date) => {
-  const nextPost = await prisma.post.findFirst({
-    where: {
-      published: true,
-      updatedAt: {
-        gt: updatedAt,
-      },
-    },
-    orderBy: {
-      updatedAt: 'asc',
-    },
-  });
-
-  return nextPost?.slug;
 };
 
 export const getAllPosts = async () => {
   return await prisma.post.findMany({
+    include: {
+      comments: true,
+    },
     orderBy: {
       updatedAt: 'desc',
     },
@@ -86,14 +65,6 @@ export const getAnyPost = async (slug: string) => {
       slug,
     },
     include: { tags: true, comments: true },
-  });
-};
-
-export const getLatestPosts = async () => {
-  return await prisma.post.findMany({
-    where: { published: true },
-    take: 5,
-    orderBy: { updatedAt: 'desc' },
   });
 };
 

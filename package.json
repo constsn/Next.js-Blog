@@ -30,7 +30,6 @@
     "marked": "^15.0.12",
     "next": "15.3.3",
     "next-auth": "^5.0.0-beta.28",
-    "p-limit": "^6.2.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-textarea-autosize": "^8.5.9",

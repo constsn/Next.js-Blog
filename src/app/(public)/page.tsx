@@ -1,26 +1,20 @@
-import { getLatestPosts, getPublishedPosts } from '@/lib/db/post';
 import { POSTS_PER_PAGE } from '@/lib/constant';
 import Link from 'next/link';
 import NotFound from './post/[slug]/not-found';
 import SearchBox from '@/components/ui/SearchBox';
 import PostCard from '@/components/post/PostCard';
-import { getAllTags } from '@/lib/db/tag';
 import LatestPostList from '@/components/post/LatestPostList';
 import TagList from '@/components/tag/TagList';
-import pLimit from 'p-limit';
+import { getBasePageData } from '@/lib/pageData';
 
 export const revalidate = 30;
 
 const HomePage = async () => {
-  const limit = pLimit(2);
-  const [posts, latestPosts, tags] = await Promise.all([
-    limit(() => getPublishedPosts()),
-    limit(() => getLatestPosts()),
-    limit(() => getAllTags()),
-  ]);
+  const data = await getBasePageData();
+  if (!data) return <NotFound />;
 
-  if (!posts) return <NotFound />;
-  const filteredTags = tags.filter(tag => tag.posts.length > 0);
+  const { posts, latestPosts, uniqueTagsByName } = data;
+
   const paginatedPosts = posts.slice(0, POSTS_PER_PAGE);
   const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
 
@@ -59,7 +53,7 @@ const HomePage = async () => {
             <SearchBox />
           </div>
           <LatestPostList posts={latestPosts} />
-          <TagList tags={filteredTags} />
+          <TagList tags={uniqueTagsByName} />
         </div>
       </div>
     </div>

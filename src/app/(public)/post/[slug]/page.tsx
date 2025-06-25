@@ -1,10 +1,5 @@
 import PostDetail from '@/components/post/PostDetail';
-import {
-  getPublishedPost,
-  getPublishedPosts,
-  getLatestPosts,
-} from '@/lib/db/post';
-import { getAllTags, getTagsByPostIdAndRelatedPosts } from '@/lib/db/tag';
+import { getPublishedPost, getPublishedPosts } from '@/lib/db/post';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
@@ -14,7 +9,8 @@ import SearchBox from '@/components/ui/SearchBox';
 import { FileText } from 'lucide-react';
 import LatestPostList from '@/components/post/LatestPostList';
 import TagList from '@/components/tag/TagList';
-import pLimit from 'p-limit';
+import NotFound from './not-found';
+import { getBasePageData } from '@/lib/pageData';
 
 type Params = {
   params: Promise<{ slug: string }>;
@@ -66,46 +62,37 @@ const PostPage = async ({ params }: Params) => {
   const { slug: encodeSlug } = await params;
   const slug = decodeURIComponent(encodeSlug);
 
-  const limit = pLimit(2);
+  const data = await getBasePageData();
+  if (!data) return <NotFound />;
+  const { posts: allPosts, latestPosts, uniqueTagsByName } = data;
 
-  const [post, allPosts, latestPosts, tags] = await Promise.all([
-    limit(() => getPublishedPost(slug)),
-    limit(() => getPublishedPosts()),
-    limit(() => getLatestPosts()),
-    limit(() => getAllTags()),
-  ]);
+  const filteredPost = allPosts.find(post => post.slug === slug);
+  if (!filteredPost) return <NotFound />;
 
-  if (!post) return notFound();
-  const currentUrl = `${baseUrl}/post/${post.slug}`;
-  const filteredTags = tags.filter(tag => tag.posts.length > 0);
+  const currentUrl = `${baseUrl}/post/${filteredPost.slug}`;
 
   const index = allPosts.findIndex(p => p.slug === slug);
-
   const previousPost = allPosts[index + 1];
   const nextPost = allPosts[index - 1];
   const previousSlug = previousPost?.slug ?? null;
   const nextSlug = nextPost?.slug ?? null;
 
-  const tagsWithPosts = await getTagsByPostIdAndRelatedPosts(slug);
-
   const relatedPosts = Array.from(
     new Map(
-      tagsWithPosts?.tags.flatMap(tag => tag.posts).map(post => [post.id, post])
+      filteredPost.tags
+        .flatMap(tag => tag.posts)
+        .filter(post => post.id !== filteredPost.id)
+        .map(post => [post.id, post])
     ).values()
-  )
-    .sort(
-      (a, b) =>
-        new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-    )
-    .slice(0, 3);
+  ).slice(0, 3);
 
   return (
     <div className="py-7 md:mx-auto md:container lg:px-24 mt-10">
       <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-24">
         <div className="flex flex-col gap-12 md:max-w-4xl">
-          <PostDetail post={post} />
+          <PostDetail post={filteredPost} />
           <div className="mx-auto">
-            <ShareButtons title={post.title} url={currentUrl} />
+            <ShareButtons title={filteredPost.title} url={currentUrl} />
           </div>
           <div className="flex justify-between items-center mt-6 px-6 md:px-14 pt-6 text-sm text-white">
             {previousSlug ? (
@@ -118,7 +105,6 @@ const PostPage = async ({ params }: Params) => {
             ) : (
               <span />
             )}
-
             {nextSlug ? (
               <Link
                 href={`/post/${encodeURIComponent(nextSlug)}`}
@@ -147,7 +133,7 @@ const PostPage = async ({ params }: Params) => {
             <SearchBox />
           </div>
           <LatestPostList posts={latestPosts} />
-          <TagList tags={filteredTags} />
+          <TagList tags={uniqueTagsByName} />
         </div>
       </div>
     </div>
