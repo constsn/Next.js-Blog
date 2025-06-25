@@ -4,7 +4,7 @@ import DashboardPostTable from '@/components/dashboard/DashboardPostTable';
 import { ADMIN_ITEMS_PER_PAGE } from '@/lib/constant';
 import { getAllPosts } from '@/lib/db/post';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 30;
 
 const Page = async () => {
   const posts = await getAllPosts();

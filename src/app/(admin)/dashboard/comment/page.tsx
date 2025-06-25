@@ -7,7 +7,7 @@ import { ja } from 'date-fns/locale';
 import { Clock, Eye, Globe, Lock } from 'lucide-react';
 import Link from 'next/link';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 30;
 
 const Page = async () => {
   const comments = await getComments();

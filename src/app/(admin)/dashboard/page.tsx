@@ -2,7 +2,7 @@ import DashboardNav from '@/components/dashboard/DashboardNav';
 import { getAllPosts } from '@/lib/db/post';
 import { FileText, Globe, Lock, MessageSquare } from 'lucide-react';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 30;
 
 const DashBoardPage = async () => {
   const posts = await getAllPosts();
