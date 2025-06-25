@@ -1,12 +1,12 @@
+import NotFound from '@/app/(public)/post/[slug]/not-found';
 import LatestPostList from '@/components/post/LatestPostList';
 import PostCard from '@/components/post/PostCard';
 import TagList from '@/components/tag/TagList';
 import SearchBox from '@/components/ui/SearchBox';
 import { POSTS_PER_PAGE } from '@/lib/constant';
-import { getLatestPosts } from '@/lib/db/post';
 import { getAllTags, getPostsByTagName } from '@/lib/db/tag';
+import { getBasePageData } from '@/lib/pageData';
 import Link from 'next/link';
-import pLimit from 'p-limit';
 
 type Params = {
   params: Promise<{ page: number; id: string }>;
@@ -39,20 +39,18 @@ const Page = async ({ params }: Params) => {
   const { page: currentPage, id } = await params;
   const tagName = decodeURIComponent(id);
 
-  const limit = pLimit(2);
+  const data = await getBasePageData();
+  if (!data) return <NotFound />;
+  const { posts: allPosts, latestPosts, uniqueTagsByName } = data;
 
-  const [posts, latestPosts, tags] = await Promise.all([
-    limit(() => getPostsByTagName(tagName)),
-    limit(() => getLatestPosts()),
-    limit(() => getAllTags()),
-  ]);
-
-  const filteredTags = tags.filter(tag => tag.posts.length > 0);
-  const paginatedPosts = posts.slice(
+  const filteredPosts = allPosts.filter(post =>
+    post.tags.some(tag => tag.name === tagName)
+  );
+  const paginatedPosts = filteredPosts.slice(
     (currentPage - 1) * POSTS_PER_PAGE,
     currentPage * POSTS_PER_PAGE
   );
-  const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
+  const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
 
   return (
     <div className="mx-auto container px-4 lg:px-24 mt-10 py-6">
@@ -104,7 +102,7 @@ const Page = async ({ params }: Params) => {
             <SearchBox />
           </div>
           <LatestPostList posts={latestPosts} />
-          <TagList tags={filteredTags} />
+          <TagList tags={uniqueTagsByName} />
         </div>
       </div>
     </div>

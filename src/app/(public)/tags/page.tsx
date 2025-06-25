@@ -1,19 +1,17 @@
 import LatestPostList from '@/components/post/LatestPostList';
 import SearchBox from '@/components/ui/SearchBox';
-import { getLatestPosts } from '@/lib/db/post';
-import { getAllTags } from '@/lib/db/tag';
 import { Tag } from 'lucide-react';
 import Link from 'next/link';
+import NotFound from '../post/[slug]/not-found';
+import { getBasePageData } from '@/lib/pageData';
 
 export const revalidate = 30;
 
 const TagsPage = async () => {
-  const [latestPosts, tags] = await Promise.all([
-    getLatestPosts(),
-    getAllTags(),
-  ]);
+  const data = await getBasePageData();
+  if (!data) return <NotFound />;
 
-  const filteredTags = tags.filter(tag => tag.posts.length > 0);
+  const { latestPosts, uniqueTagsByName } = data;
 
   return (
     <div className="mx-auto container px-4 lg:px-24 py-6 mt-10">
@@ -24,7 +22,7 @@ const TagsPage = async () => {
             <h1 className="text-xl">タグ一覧</h1>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {filteredTags.map(tag => (
+            {uniqueTagsByName.map(tag => (
               <Link
                 href={`/tags/${encodeURIComponent(tag.name)}`}
                 key={tag.id}

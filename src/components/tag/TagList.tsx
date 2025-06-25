@@ -5,9 +5,6 @@ type Prop = {
   tags: {
     id: number;
     name: string;
-    posts: {
-      id: number;
-    }[];
   }[];
 };
 

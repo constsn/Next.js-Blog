@@ -1,5 +1,4 @@
 import DashboardNav from '@/components/dashboard/DashboardNav';
-import { getComments } from '@/lib/db/comment';
 import { getAllPosts } from '@/lib/db/post';
 import { FileText, Globe, Lock, MessageSquare } from 'lucide-react';
 
@@ -7,8 +6,7 @@ export const dynamic = 'force-dynamic';
 
 const DashBoardPage = async () => {
   const posts = await getAllPosts();
-  const comments = await getComments();
-
+  const comments = posts.flatMap(post => post.comments);
   const draftPosts = posts.filter(post => !post.published);
   const publishedPosts = posts.filter(post => post.published);
 

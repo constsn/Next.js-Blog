@@ -4,9 +4,9 @@ import TagList from '@/components/tag/TagList';
 import Pagination from '@/components/ui/Pagination';
 import SearchBox from '@/components/ui/SearchBox';
 import { POSTS_PER_PAGE } from '@/lib/constant';
-import { getLatestPosts, getPublishedPosts } from '@/lib/db/post';
-import { getAllTags } from '@/lib/db/tag';
-import pLimit from 'p-limit';
+import { getPublishedPosts } from '@/lib/db/post';
+import NotFound from '../../post/[slug]/not-found';
+import { getBasePageData } from '@/lib/pageData';
 
 type Params = {
   params: Promise<{ page: number }>;
@@ -26,15 +26,10 @@ export async function generateStaticParams() {
 const Page = async ({ params }: Params) => {
   const { page: currentPage } = await params;
 
-  const limit = pLimit(2);
+  const data = await getBasePageData();
+  if (!data) return <NotFound />;
 
-  const [posts, latestPosts, tags] = await Promise.all([
-    limit(() => getPublishedPosts()),
-    limit(() => getLatestPosts()),
-    limit(() => getAllTags()),
-  ]);
-
-  const filteredTags = tags.filter(tag => tag.posts.length > 0);
+  const { posts, latestPosts, uniqueTagsByName } = data;
 
   const paginatedPosts = posts.slice(
     (currentPage - 1) * POSTS_PER_PAGE,
@@ -58,7 +53,7 @@ const Page = async ({ params }: Params) => {
             <SearchBox />
           </div>
           <LatestPostList posts={latestPosts} />
-          <TagList tags={filteredTags} />
+          <TagList tags={uniqueTagsByName} />
         </div>
       </div>
     </div>
