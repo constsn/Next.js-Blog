@@ -1,7 +1,7 @@
 import PostCreateForm from '@/components/form/PostCreateForm';
 import { popularTags } from '@/lib/db/tag';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 30;
 
 const Page = async () => {
   const tags = await popularTags();
