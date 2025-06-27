@@ -11,6 +11,7 @@ import LatestPostList from '@/components/post/LatestPostList';
 import TagList from '@/components/tag/TagList';
 import NotFound from './not-found';
 import { getBasePageData } from '@/lib/pageData';
+import PageViewTracker from '@/components/post/PageViewTracker';
 
 type Params = {
   params: Promise<{ slug: string }>;
@@ -91,6 +92,7 @@ const PostPage = async ({ params }: Params) => {
       <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-24">
         <div className="flex flex-col gap-12 md:max-w-4xl">
           <PostDetail post={filteredPost} />
+          <PageViewTracker slug={slug} />
           <div className="mx-auto">
             <ShareButtons title={filteredPost.title} url={currentUrl} />
           </div>

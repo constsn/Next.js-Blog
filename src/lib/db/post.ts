@@ -29,6 +29,7 @@ export const getAllPosts = async () => {
   return await prisma.post.findMany({
     include: {
       comments: true,
+      pageViews: true,
     },
     orderBy: {
       updatedAt: 'desc',
@@ -112,6 +113,15 @@ export const searchPosts = async (search: string) => {
     },
     orderBy: {
       updatedAt: 'desc',
+    },
+  });
+};
+
+export const getPostBySlug = async (slug: string) => {
+  return await prisma.post.findUnique({
+    where: {
+      published: true,
+      slug,
     },
   });
 };

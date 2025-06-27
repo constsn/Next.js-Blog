@@ -14,6 +14,10 @@ type Prop = {
     coverImageUrl: string;
     createdAt: Date;
     updatedAt: Date;
+    pageViews: {
+      id: number;
+      anonymousId: string;
+    }[];
   }[];
 };
 
@@ -41,6 +45,9 @@ const DashboardPostTable = async ({ paginatedPosts }: Prop) => {
               記事タイトル
             </th>
             <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              PV数
+            </th>
+            <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               ステータス
             </th>
             <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -61,6 +68,9 @@ const DashboardPostTable = async ({ paginatedPosts }: Prop) => {
                     {post.title}
                   </div>
                 </div>
+              </td>
+              <td className="px-6 py-4">
+                {post.pageViews ? `${post.pageViews.length}` : 0}
               </td>
               <td className="px-6 py-4">
                 <span
