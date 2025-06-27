@@ -90,7 +90,7 @@ const PostPage = async ({ params }: Params) => {
   return (
     <div className="py-7 md:mx-auto md:container lg:px-24 mt-10">
       <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-24">
-        <div className="flex flex-col gap-12 md:max-w-4xl">
+        <div className="flex flex-col mx-auto gap-12 md:max-w-4xl">
           <PostDetail post={filteredPost} />
           <PageViewTracker slug={slug} />
           <div className="mx-auto">
