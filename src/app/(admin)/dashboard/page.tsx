@@ -1,6 +1,6 @@
 import DashboardNav from '@/components/dashboard/DashboardNav';
 import { getAllPosts } from '@/lib/db/post';
-import { FileText, Globe, Lock, MessageSquare } from 'lucide-react';
+import { Eye, FileText, Globe, Lock, MessageSquare } from 'lucide-react';
 
 export const revalidate = 30;
 
@@ -9,6 +9,7 @@ const DashBoardPage = async () => {
   const comments = posts.flatMap(post => post.comments);
   const draftPosts = posts.filter(post => !post.published);
   const publishedPosts = posts.filter(post => post.published);
+  const totalPageViews = posts.flatMap(post => post.pageViews);
 
   return (
     <DashboardNav isActive="dashboard" label="ダッシュボード">
@@ -28,6 +29,17 @@ const DashBoardPage = async () => {
           <div className="bg-white rounded-md border border-gray-200 p-6">
             <div className="flex items-center justify-between">
               <div>
+                <p className="text-sm font-medium text-gray-600">総PV数</p>
+                <p className="text-2xl font-bold text-gray-900 mt-1">
+                  {totalPageViews.length}
+                </p>
+              </div>
+              <Eye className="w-6 h-6 text-gray-500" />
+            </div>
+          </div>
+          <div className="bg-white rounded-md border border-gray-200 p-6">
+            <div className="flex items-center justify-between">
+              <div>
                 <p className="text-sm font-medium text-gray-600">
                   総コメント数
                 </p>
@@ -38,6 +50,7 @@ const DashBoardPage = async () => {
               <MessageSquare className="w-6 h-6" />
             </div>
           </div>
+
           <div className="bg-white rounded-md border border-gray-200 p-6">
             <div className="flex items-center justify-between">
               <div>
